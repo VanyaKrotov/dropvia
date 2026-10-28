@@ -1,0 +1,117 @@
+{
+  "checkedOn": "2026-10-28",
+  "method": "Codex app-server initialize + skills/list, forceReload=true; no model turn",
+  "skills": [
+    {
+      "name": "apple-design",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "code-review",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "codebase-design",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "content-strategy",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "copy-editing",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "copywriting",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "cro",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "design-taste-frontend",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "dropvia-frontend-design",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "dropvia-seo-audit",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "dropvia-test-driven-development",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "impeccable",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "react-router",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "schema",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "site-architecture",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "systematic-debugging",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "vercel-composition-patterns",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "vercel-react-best-practices",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "verification-before-completion",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "web-design-guidelines",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "writing-plans",
+      "scope": "repo",
+      "enabled": true
+    }
+  ],
+  "errors": []
+}

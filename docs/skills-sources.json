@@ -1,0 +1,295 @@
+[
+  {
+    "source": "vercel-labs/agent-skills",
+    "upstreamName": "vercel-react-best-practices",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+    "stars": 33139,
+    "committedAt": "2026-10-27T21:40:02Z",
+    "sourcePath": "skills/react-best-practices",
+    "name": "vercel-react-best-practices",
+    "licenseEvidence": "MIT declared in upstream README; standalone license not supplied"
+  },
+  {
+    "source": "vercel-labs/agent-skills",
+    "upstreamName": "vercel-composition-patterns",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+    "stars": 33139,
+    "committedAt": "2026-10-27T21:40:02Z",
+    "sourcePath": "skills/composition-patterns",
+    "name": "vercel-composition-patterns",
+    "licenseEvidence": "MIT declared in upstream README; standalone license not supplied"
+  },
+  {
+    "source": "vercel-labs/agent-skills",
+    "upstreamName": "web-design-guidelines",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+    "stars": 33139,
+    "committedAt": "2026-10-27T21:40:02Z",
+    "sourcePath": "skills/web-design-guidelines",
+    "name": "web-design-guidelines",
+    "licenseEvidence": "MIT declared in upstream README; standalone license not supplied"
+  },
+  {
+    "source": "remix-run/react-router",
+    "upstreamName": "react-router",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "959182edd6fe3556cec3b52ec83178d99da29ceb",
+    "stars": 56628,
+    "committedAt": "2026-10-27T21:49:24Z",
+    "sourcePath": ".agents/skills/react-router",
+    "name": "react-router"
+  },
+  {
+    "source": "anthropics/skills",
+    "upstreamName": "frontend-design",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Manifest name and folder prefixed dropvia- to avoid global skill collision; remaining upstream content unchanged",
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "dbd4588f9e1033efb41dad4bef2f7947c8993d44",
+    "stars": 184378,
+    "committedAt": "2026-10-09T18:45:49Z",
+    "sourcePath": "skills/frontend-design",
+    "name": "dropvia-frontend-design"
+  },
+  {
+    "source": "emilkowalski/skills",
+    "upstreamName": "apple-design",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "2d228630ba1446365f614a108cb8252f1feda202",
+    "stars": 50880,
+    "committedAt": "2026-10-11T13:58:32Z",
+    "sourcePath": "skills/apple-design",
+    "name": "apple-design"
+  },
+  {
+    "source": "Leonxlnx/taste-skill",
+    "upstreamName": "design-taste-frontend",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "12af471f627f866411b4bd785b19646d3672784c",
+    "stars": 103971,
+    "committedAt": "2026-10-24T23:42:19Z",
+    "sourcePath": "skills/taste-skill",
+    "name": "design-taste-frontend"
+  },
+  {
+    "source": "pbakaus/impeccable",
+    "upstreamName": "impeccable",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "8409a564d1baee90b2dde4f7a8f06288838e3921",
+    "stars": 91241,
+    "committedAt": "2026-10-28T08:49:23Z",
+    "sourcePath": ".agents/skills/impeccable",
+    "name": "impeccable"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "copywriting",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/copywriting",
+    "name": "copywriting"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "copy-editing",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/copy-editing",
+    "name": "copy-editing"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "content-strategy",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/content-strategy",
+    "name": "content-strategy"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "site-architecture",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/site-architecture",
+    "name": "site-architecture"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "cro",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/cro",
+    "name": "cro"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "seo-audit",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Manifest name and folder prefixed dropvia- to avoid global skill collision; remaining upstream content unchanged",
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/seo-audit",
+    "name": "dropvia-seo-audit"
+  },
+  {
+    "source": "coreyhaines31/marketingskills",
+    "upstreamName": "schema",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+    "stars": 57003,
+    "committedAt": "2026-10-27T21:15:52Z",
+    "sourcePath": "skills/schema",
+    "name": "schema"
+  },
+  {
+    "source": "mattpocock/skills",
+    "upstreamName": "codebase-design",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+    "stars": 305255,
+    "committedAt": "2026-10-27T07:44:12Z",
+    "sourcePath": "skills/engineering/codebase-design",
+    "name": "codebase-design"
+  },
+  {
+    "source": "mattpocock/skills",
+    "upstreamName": "code-review",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+    "stars": 305255,
+    "committedAt": "2026-10-27T07:44:12Z",
+    "sourcePath": "skills/engineering/code-review",
+    "name": "code-review"
+  },
+  {
+    "source": "obra/superpowers",
+    "upstreamName": "writing-plans",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "stars": 306890,
+    "committedAt": "2026-10-21T21:00:49Z",
+    "sourcePath": "skills/writing-plans",
+    "name": "writing-plans"
+  },
+  {
+    "source": "obra/superpowers",
+    "upstreamName": "test-driven-development",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Manifest name and folder prefixed dropvia- to avoid global skill collision; remaining upstream content unchanged",
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "stars": 306890,
+    "committedAt": "2026-10-21T21:00:49Z",
+    "sourcePath": "skills/test-driven-development",
+    "name": "dropvia-test-driven-development"
+  },
+  {
+    "source": "obra/superpowers",
+    "upstreamName": "systematic-debugging",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "stars": 306890,
+    "committedAt": "2026-10-21T21:00:49Z",
+    "sourcePath": "skills/systematic-debugging",
+    "name": "systematic-debugging"
+  },
+  {
+    "source": "obra/superpowers",
+    "upstreamName": "verification-before-completion",
+    "method": "skills@1.7.4 add <audited snapshot path> --skill <name> -a codex --copy -y",
+    "adaptations": [
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+    "stars": 306890,
+    "committedAt": "2026-10-21T21:00:49Z",
+    "sourcePath": "skills/verification-before-completion",
+    "name": "verification-before-completion"
+  },
+  {
+    "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "upstreamName": "ui-ux-pro-max",
+    "method": "Official generatePlatformFiles renderer at pinned source commit (Codex template), then skills@1.7.4 add staged skill -a codex --copy -y",
+    "adaptations": [
+      "Only orchestrator retained; six unrelated sibling sub-skills omitted",
+      "Text line endings normalized to LF for reproducible Git checkout and Skills CLI hashes"
+    ],
+    "commit": "28b3b8dee8c976df4fa3e94aed4e092ad43fcb03",
+    "stars": 141817,
+    "committedAt": "2026-10-26T10:07:27Z",
+    "sourcePath": "cli/assets/templates/platforms/codex.json",
+    "name": "ui-ux-pro-max"
+  }
+]

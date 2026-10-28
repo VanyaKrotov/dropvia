@@ -1,0 +1,11 @@
+node_modules/
+build/
+.react-router/
+coverage/
+playwright-report/
+test-results/
+.agents/skills/
+.taste-skill/
+DESIGN.md
+package-lock.json
+docs/skills-integrity.json

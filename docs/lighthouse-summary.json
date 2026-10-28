@@ -1,0 +1,54 @@
+[
+  {
+    "mode": "mobile",
+    "url": "http://127.0.0.1:4173/",
+    "lighthouseVersion": "13.6.0",
+    "fetchedAt": "2026-10-28T11:44:42.972Z",
+    "scores": {
+      "accessibility": 100,
+      "performance": 100,
+      "bestPractices": 100,
+      "seo": 66.0
+    },
+    "lcpMs": 762.8193000000001,
+    "cls": 0,
+    "tbtMs": 0,
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "throttlingMethod": "simulate",
+    "failedSeoAudits": ["is-crawlable"],
+    "note": "Local production lab run; noindex intentionally blocks indexing. TBT is not INP. No field CWV measured."
+  },
+  {
+    "mode": "desktop",
+    "url": "http://127.0.0.1:4173/",
+    "lighthouseVersion": "13.6.0",
+    "fetchedAt": "2026-10-28T11:44:43.863Z",
+    "scores": {
+      "accessibility": 100,
+      "performance": 100,
+      "bestPractices": 100,
+      "seo": 66.0
+    },
+    "lcpMs": 209.08909999999997,
+    "cls": 0,
+    "tbtMs": 0,
+    "throttling": {
+      "rttMs": 40,
+      "throughputKbps": 10240,
+      "requestLatencyMs": 0,
+      "downloadThroughputKbps": 0,
+      "uploadThroughputKbps": 0,
+      "cpuSlowdownMultiplier": 1
+    },
+    "throttlingMethod": "simulate",
+    "failedSeoAudits": ["is-crawlable"],
+    "note": "Local production lab run; noindex intentionally blocks indexing. TBT is not INP. No field CWV measured."
+  }
+]

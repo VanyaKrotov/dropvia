@@ -1,0 +1,362 @@
+[
+  {
+    "repo": "vercel-labs/agent-skills",
+    "recentCommits": [
+      {
+        "sha": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+        "message": "Merge pull request #350 from t-mdo/tmo/temporary-deploy-fallback",
+        "date": "2026-10-27T21:40:02Z"
+      },
+      {
+        "sha": "dfeeb54cbe87d70d157cdbeb422365f7d4ec8796",
+        "message": "fix(deploy-to-vercel): clarify sandbox login check",
+        "date": "2026-10-27T21:33:08Z"
+      },
+      {
+        "sha": "4f8ed6022d21339a541a9bcd81e0fd921df99cac",
+        "message": "fix(deploy-to-vercel): run project checks before the no-auth fallback in sandboxes",
+        "date": "2026-10-27T21:29:47Z"
+      },
+      {
+        "sha": "add393b86db0a53d07435e80b308514260fc6f27",
+        "message": "fix(deploy-to-vercel): use vercel deploy --temporary for no-auth deploys",
+        "date": "2026-10-27T21:00:53Z"
+      },
+      {
+        "sha": "6ec269328bc400712ee225a173a14b6b29128df7",
+        "message": "fix: recommend stable React 19.3 for view transitions",
+        "date": "2026-10-27T04:16:01Z"
+      }
+    ]
+  },
+  {
+    "repo": "remix-run/agent-skills",
+    "recentCommits": [
+      {
+        "sha": "33578aae4aa36a90c9f8f602105a1ccb0f4efe45",
+        "message": "Update README to reflect repository changes",
+        "date": "2026-06-18T13:30:14Z"
+      },
+      {
+        "sha": "66ecd001d053e746b270a06388cf2bc1f04b913e",
+        "message": "Revise README to announce skills repo archiving",
+        "date": "2026-06-18T13:29:54Z"
+      },
+      {
+        "sha": "1015eb4a27d92d3eb06181e4d37e3881e08a77b2",
+        "message": "Merge pull request #2 from lazybean/patch-1",
+        "date": "2026-02-05T21:42:21Z"
+      },
+      {
+        "sha": "df990ec9f3adbf8e91b4fdefed9586f7e44e2b0b",
+        "message": "Update SKILL.md",
+        "date": "2026-02-05T09:18:14Z"
+      },
+      {
+        "sha": "79b03ac6740fcf39dbdc43af7c059c2202bb73ab",
+        "message": "Fix optimistic value assignment in SKILL.md",
+        "date": "2026-02-05T09:08:21Z"
+      }
+    ]
+  },
+  {
+    "repo": "remix-run/react-router",
+    "recentCommits": [
+      {
+        "sha": "959182edd6fe3556cec3b52ec83178d99da29ceb",
+        "message": "chore: format",
+        "date": "2026-10-27T21:49:24Z"
+      },
+      {
+        "sha": "dacb38ebd77da73ddb76fac48f13da1090624293",
+        "message": "Correct 8.5.1 changelog classifications",
+        "date": "2026-10-27T21:48:15Z"
+      },
+      {
+        "sha": "a2783e6612b8424e9e1a5e3e2d69435805ee51dc",
+        "message": "Release v8.5.1 (#15656)",
+        "date": "2026-10-27T21:36:51Z"
+      },
+      {
+        "sha": "69465b0c64423810d5ee02f5046b38f8e71a3983",
+        "message": "docs: prepare 8.5.1 release notes",
+        "date": "2026-10-27T21:27:53Z"
+      },
+      {
+        "sha": "0aa2815f7edf61a2e22b26f42148acb58c85b007",
+        "message": "test: fix WebKit Await hydration fixture (#15706)",
+        "date": "2026-10-27T21:02:40Z"
+      }
+    ]
+  },
+  {
+    "repo": "anthropics/skills",
+    "recentCommits": [
+      {
+        "sha": "dbd4588f9e1033efb41dad4bef2f7947c8993d44",
+        "message": "Update claude-api skill: dynamic workflows and the four workflow quickstarts (#1995)",
+        "date": "2026-10-09T18:45:49Z"
+      },
+      {
+        "sha": "9d630808e4add0a7146de4af9384155d5dee350a",
+        "message": "Update claude-api skill: Claude Haiku 5.5 as the current Haiku, Managed Agents and preserved-thinking fixes (#1991)",
+        "date": "2026-10-09T10:06:51Z"
+      },
+      {
+        "sha": "683bc88e56f3e09ba94f7055977f3d3aa499f202",
+        "message": "Update claude-api skill: managed-agents-onboard from a quickstart name or a URL (#1962)",
+        "date": "2026-10-05T13:46:42Z"
+      },
+      {
+        "sha": "8a1541c4a3ffa5a20a5a91de0dcf3f0bab1d1ef4",
+        "message": "Update claude-api skill: Claude Opus 5.5 default, Claude Sonnet 5.5, build-eval and hillclimb guides (#1930)",
+        "date": "2026-09-29T02:20:03Z"
+      },
+      {
+        "sha": "33375500bcea98d610eb30ce10ac4e59b89c390d",
+        "message": "Update claude-api skill: link refusal billing to the docs (#1825)",
+        "date": "2026-09-24T16:20:35Z"
+      }
+    ]
+  },
+  {
+    "repo": "emilkowalski/skills",
+    "recentCommits": [
+      {
+        "sha": "2d228630ba1446365f614a108cb8252f1feda202",
+        "message": "update readme",
+        "date": "2026-10-11T13:58:32Z"
+      },
+      {
+        "sha": "6465079742eb019bc419caf2c352ecda03f5dfd8",
+        "message": "Add /animation-performance skill",
+        "date": "2026-10-11T13:30:58Z"
+      },
+      {
+        "sha": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+        "message": "Add break ui skill",
+        "date": "2026-10-02T10:43:31Z"
+      },
+      {
+        "sha": "d16ebe60d09a5ba2afcb7054ede9d0a10c9f6128",
+        "message": "Update README.md",
+        "date": "2026-09-23T23:18:27Z"
+      },
+      {
+        "sha": "9a5852a7170392d9235a219e25c3fa6362efb00c",
+        "message": "Update README.md",
+        "date": "2026-09-23T23:17:02Z"
+      }
+    ]
+  },
+  {
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "recentCommits": [
+      {
+        "sha": "28b3b8dee8c976df4fa3e94aed4e092ad43fcb03",
+        "message": "fix: don't read '3d'/'2fa' after a stack name as a framework version (#548)",
+        "date": "2026-10-26T10:07:27Z"
+      },
+      {
+        "sha": "1f8857914da3c723d58dab1d609dd0d55a86bf51",
+        "message": "fix: clean up successful legacy release downloads (#546)",
+        "date": "2026-10-26T07:06:53Z"
+      },
+      {
+        "sha": "d14efff8ed1faa4187f004f79926f428c8074ec7",
+        "message": "docs: replace disabled Discussion links and the 404 stack clone URL (#543)",
+        "date": "2026-10-23T10:06:30Z"
+      },
+      {
+        "sha": "28327f2f214d31bbd7555ed0c012a5df6484ed96",
+        "message": "docs: sync Azerbaijani README with the English one (#541)",
+        "date": "2026-10-23T01:06:30Z"
+      },
+      {
+        "sha": "04cfb449bd8494811ad63e94172a308fa25a551a",
+        "message": "fix: make verify:data pass on Windows checkouts (#540)",
+        "date": "2026-10-22T22:08:59Z"
+      }
+    ]
+  },
+  {
+    "repo": "Leonxlnx/taste-skill",
+    "recentCommits": [
+      {
+        "sha": "12af471f627f866411b4bd785b19646d3672784c",
+        "message": "tasteskill v2.1.5: community fixes (#172)",
+        "date": "2026-10-24T23:42:19Z"
+      },
+      {
+        "sha": "af8a897996e159ccc89c9da535dff714d5dba62d",
+        "message": "v2.1.5: community fixes (#156, #161, #163, #171) and an encoding check",
+        "date": "2026-10-24T23:40:02Z"
+      },
+      {
+        "sha": "f99d05914643e4fa199830a8e7e1e33dbe13693e",
+        "message": "docs(taste-skill): keyboard reach, accessible names, and controls that explain themselves (#170)",
+        "date": "2026-10-24T23:32:53Z"
+      },
+      {
+        "sha": "fd25565e103db0abe87e1d970bf3e8c67889fb43",
+        "message": "fix(inspect): keep screenshots for widths sharing a viewport class (#165)",
+        "date": "2026-10-24T23:32:43Z"
+      },
+      {
+        "sha": "5fac2066df0731ae58e7a2d673a015acaa2e32c2",
+        "message": "Escape text passed to innerHTML in charts.js and the Stage.split fallback (#169)",
+        "date": "2026-10-24T23:32:27Z"
+      }
+    ]
+  },
+  {
+    "repo": "pbakaus/impeccable",
+    "recentCommits": [
+      {
+        "sha": "8409a564d1baee90b2dde4f7a8f06288838e3921",
+        "message": "Fix: design hook stops re-reporting unchanged findings (#1202) (#1207)",
+        "date": "2026-10-28T08:49:23Z"
+      },
+      {
+        "sha": "3e3a9179e01a60265000ce239c0a99803ec1e60d",
+        "message": "Sync generated provider output",
+        "date": "2026-10-28T06:05:26Z"
+      },
+      {
+        "sha": "8f2b1870c501fb20e9cbb84a1cc412348d1f051d",
+        "message": "Add a Remove badge to live mode that stages element removals as edits (#1184)",
+        "date": "2026-10-28T06:04:36Z"
+      },
+      {
+        "sha": "d34c87e1a00989ae8dbdd7f6b30b70f23319e860",
+        "message": "Read the contrast ground a reader sees under parked faces, scrims, dot grids and parked underlines; report ghost words as advisory (#1201)",
+        "date": "2026-10-27T07:31:56Z"
+      },
+      {
+        "sha": "0dd67516c6387706e7b7e7f47f1c715efe6947c6",
+        "message": "Report a low-contrast colour pair and a nested-cards panel once, with a count (#1200)",
+        "date": "2026-10-27T06:25:35Z"
+      }
+    ]
+  },
+  {
+    "repo": "coreyhaines31/marketingskills",
+    "recentCommits": [
+      {
+        "sha": "0cd9b3a0ef4c411a1d690419ce843f2a1da32cce",
+        "message": "Merge pull request #909 from coreyhaines31/fix/prospecting-gap-plays",
+        "date": "2026-10-27T21:15:52Z"
+      },
+      {
+        "sha": "b96fc7cfebd86b29edb91674eb88b4e0c3da817f",
+        "message": "chore: bump repo to 2.13.9",
+        "date": "2026-10-27T21:12:34Z"
+      },
+      {
+        "sha": "3c849a245b5d07a596c48d5e43b26586b97ae036",
+        "message": "feat(marketing-loops): verify gap evidence in the signal-sweep loop",
+        "date": "2026-10-27T21:12:34Z"
+      },
+      {
+        "sha": "ec6d913b4a8c3365796547ef868c195f61de515c",
+        "message": "test(prospecting): add a gap-play eval",
+        "date": "2026-10-27T21:12:34Z"
+      },
+      {
+        "sha": "40bacfe0900a61ac0ff9acc32720162a8207d79e",
+        "message": "feat(prospecting): route gap-play requests to signal plays",
+        "date": "2026-10-27T21:12:33Z"
+      }
+    ]
+  },
+  {
+    "repo": "mattpocock/skills",
+    "recentCommits": [
+      {
+        "sha": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+        "message": "Close blank issues and route requests by kind (#1169)",
+        "date": "2026-10-27T07:44:12Z"
+      },
+      {
+        "sha": "ed0de59eb5de8c2730a650cc69f588ffa64c1040",
+        "message": "setup-matt-pocock-skills: reachable repo, legacy CONTEXT.md, tracker template fixes (#1228)",
+        "date": "2026-10-27T07:39:47Z"
+      },
+      {
+        "sha": "5beb35b040e3de97e54fa9e386d7e42d15c295c2",
+        "message": "chief-of-staff: keep memory in a dated, commit-cited wiki (#1304)",
+        "date": "2026-10-19T15:51:40Z"
+      },
+      {
+        "sha": "49dd158d1076134a641b33efb035946536778336",
+        "message": "wizard: template fixes (#1220, #1142, #1081, #1041, #1003) (#1237)",
+        "date": "2026-10-09T10:56:49Z"
+      },
+      {
+        "sha": "82672251ee9d9a0b823202c94a613f5038dd28c9",
+        "message": "out-of-scope: retro always loads writing-for-agents (#1240)",
+        "date": "2026-10-09T10:56:31Z"
+      }
+    ]
+  },
+  {
+    "repo": "obra/superpowers",
+    "recentCommits": [
+      {
+        "sha": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+        "message": "Release v7.0.1: brainstorming retune, skills that better survive compaction, contribution templates (#2581)",
+        "date": "2026-10-21T21:00:49Z"
+      },
+      {
+        "sha": "b739a8af570e10a95898f2bdf6cec97467fa6c12",
+        "message": "Templates: require a human-written summary and the filer's instructions (#2570)",
+        "date": "2026-10-20T20:13:37Z"
+      },
+      {
+        "sha": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+        "message": "Release v7.0.0: rebuilt brainstorming, Antigravity Marketplace manifest, Windows hook fixes (#2489)",
+        "date": "2026-10-10T00:28:04Z"
+      },
+      {
+        "sha": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+        "message": "Release v6.4.2: leaner plans from writing-plans (#2384)",
+        "date": "2026-09-25T18:06:27Z"
+      },
+      {
+        "sha": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+        "message": "Release v6.4.1: diagnosing-superpowers, Native plan execution, OpenCode 2.0 and Muse support (#2338)",
+        "date": "2026-09-19T00:31:35Z"
+      }
+    ]
+  },
+  {
+    "repo": "vercel-labs/skills",
+    "recentCommits": [
+      {
+        "sha": "699d35b21bd3c97dbc0edeae062b2698898bb2e5",
+        "message": "docs: document experimental commands in README (#2444)",
+        "date": "2026-10-28T04:18:51Z"
+      },
+      {
+        "sha": "bbd216ae930db818bf90139c034418cd74de34f2",
+        "message": "fix(check): report available updates without installing them (#2605)",
+        "date": "2026-10-28T04:16:31Z"
+      },
+      {
+        "sha": "d703b5e75fc07854d11c067e4671d0421dcdb19f",
+        "message": "feat(list): show untracked and missing skills against the lock file (#2602)",
+        "date": "2026-10-28T04:12:54Z"
+      },
+      {
+        "sha": "51d314f94c6364c464a41286a4fe972f80e8f842",
+        "message": "fix(update): reinstall locked skills that are missing from disk (#2601)",
+        "date": "2026-10-28T04:11:58Z"
+      },
+      {
+        "sha": "d8eca76d5dbe47df2d146d036e32534b74ece57a",
+        "message": "Merge pull request #2590 from vercel-labs/codex/update-board-integration",
+        "date": "2026-10-27T18:52:16Z"
+      }
+    ]
+  }
+]
