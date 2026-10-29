@@ -104,7 +104,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          remote_commit="$(gh api "repos/${GH_REPO}/commits/tags%2F${RELEASE_TAG}" --jq '.sha')"
+          remote_commit="$(gh api "repos/${GH_REPO}/commits/refs/tags/${RELEASE_TAG}" --jq '.sha')"
           if [[ "$remote_commit" != "$RELEASE_COMMIT" ]]; then
             echo 'Release tag changed after validation; refusing publication.' >&2
             exit 1
