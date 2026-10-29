@@ -1,5 +1,9 @@
 # Архитектура Dropvia
 
+## CLI profile comparison
+
+CLI profile comparison note: Ulimits is compared by unique Name with exact record values, because Docker inspect merges daemon defaults from an unordered map. Other HostConfig fields remain strict. A mismatch reports field names only and stops before destructive replacement; the probe is never started. This is a narrow semantic equivalence, not permission to drop arbitrary resource/security/network settings.
+
 ## Cookie notice
 
 `features/cookie-notice` owns the first-party dismissal cookie and the one-button notice. Root loader parses the cookie before SSR; common Providers render the translated notice on all existing public screens, including sign-in and file nodes. Simplified root error pages remain outside Providers. Cookie-dependent HTML is no-store; the homepage merges parent cache headers with action headers instead of dropping them.

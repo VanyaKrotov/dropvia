@@ -183,7 +183,23 @@ if (tool === 'id') {
     if (!item) {
       fail('no container');
     }
-    print([item]);
+    if (state.daemonUlimits) {
+      const explicit = item.HostConfig.Ulimits ?? [];
+      const names = new Set(explicit.map((limit) => limit.Name));
+      const defaults = state.daemonUlimits.filter((limit) => !names.has(limit.Name));
+      // Docker merges a Go map on each inspect, so daemon defaults have no stable order.
+      if (item.Name.startsWith('/dropvia-profile-')) {
+        defaults.reverse();
+      }
+      print([
+        {
+          ...item,
+          HostConfig: { ...item.HostConfig, Ulimits: [...explicit, ...defaults] },
+        },
+      ]);
+    } else {
+      print([item]);
+    }
   } else if (command === 'image inspect') {
     const item = imageFor(args.at(-1));
     if (!item) {

@@ -7,7 +7,7 @@ readonly REPOSITORY='VanyaKrotov/dropvia'
 readonly SOURCE="https://github.com/$REPOSITORY"
 readonly CLI_URL="https://raw.githubusercontent.com/$REPOSITORY/main/scripts/dropvia.sh"
 readonly NAME='dropvia'
-readonly CLI_VERSION='0.1.0'
+readonly CLI_VERSION='0.1.1'
 readonly SCRIPT_SOURCE=${BASH_SOURCE[0]}
 STATE_DIR=${DROPVIA_STATE_DIR:-/var/lib/dropvia}
 WORKDIR=''
@@ -291,8 +291,32 @@ assert_supported_profile() {
 import json,sys
 old=json.load(open(sys.argv[1],encoding='utf-8'))[0]
 standard=json.load(open(sys.argv[2],encoding='utf-8'))[0]
-if old.get('HostConfig')!=standard.get('HostConfig'):
-    sys.exit('Нестандартный HostConfig (network/resources/restart/logging/security): точный откат не поддерживается.')
+
+def host_profile(config):
+    profile=dict(config or {})
+    limits=profile.get('Ulimits')
+    if limits is None: limits=[]
+    if not isinstance(limits,list):
+        sys.exit('Некорректный HostConfig.Ulimits: ожидался список лимитов.')
+    names=set()
+    for limit in limits:
+        if not isinstance(limit,dict):
+            sys.exit('Некорректный HostConfig.Ulimits: ожидалась запись лимита.')
+        name=limit.get('Name')
+        if not isinstance(name,str) or not name or name in names:
+            sys.exit('Некорректный HostConfig.Ulimits: пустое или повторяющееся имя.')
+        if any(type(limit.get(key)) is not int or limit[key]<-1 for key in ('Soft','Hard')):
+            sys.exit('Некорректный HostConfig.Ulimits: Soft/Hard должны быть целыми числами не меньше -1.')
+        names.add(name)
+    # Docker inspect merges daemon defaults from a Go map; order is not configuration.
+    profile['Ulimits']=sorted(limits,key=lambda limit: limit['Name'])
+    return profile
+
+actual,expected=host_profile(old.get('HostConfig')),host_profile(standard.get('HostConfig'))
+changed=sorted(key for key in actual.keys()|expected.keys()
+               if key not in actual or key not in expected or actual[key]!=expected[key])
+if changed:
+    sys.exit('Нестандартный HostConfig: различаются поля '+', '.join(changed)+'. Точный откат не поддерживается.')
 a,b=old.get('Config',{}),standard.get('Config',{})
 ignored={'Hostname','Image','Labels'}
 for key in a.keys()|b.keys():

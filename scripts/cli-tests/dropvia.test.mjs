@@ -250,6 +250,7 @@ cliTest(
       const result = f.run(command, command === 'install' ? 'y\n\n\n' : '');
       assert.notEqual(result.status, 0);
       assert.match(result.stderr, /Нестандартный HostConfig/);
+      assert.match(result.stderr, /Memory/);
       assert.equal(f.read().containers[f.containerId].State.Running, true);
       assert.equal(dockerCalls(f.read(), 'container stop').length, 0);
       assert.equal(dockerCalls(f.read(), 'image rm').length, 0);
@@ -285,6 +286,51 @@ cliTest('extra attached network without aliases blocks destructive replacement',
   assert.equal(f.read().containers[f.containerId].State.Running, true);
   assert.equal(dockerCalls(f.read(), 'container stop').length, 0);
 });
+
+const daemonUlimits = [
+  { Name: 'nofile', Soft: 1024, Hard: 4096 },
+  { Name: 'nproc', Soft: 512, Hard: 1024 },
+];
+
+for (const command of ['install', 'update']) {
+  cliTest(
+    `${command} accepts identical daemon ulimits in a different inspect order`,
+    (t) => {
+      const f = fixture(t, { daemonUlimits }, true);
+      const result = f.run(command, command === 'install' ? 'y\n\n\n' : '');
+      assert.equal(result.status, 0, result.stderr);
+      const current = Object.values(f.read().containers).find(
+        (item) => item.Name === '/dropvia',
+      );
+      assert.ok(current);
+      assert.equal(current.Config.Labels['io.dropvia.version'], 'v1.0.0');
+      assert.equal(current.State.Running, true);
+    },
+  );
+}
+
+cliTest(
+  'changed or duplicate ulimits remain blocked before replacing the container',
+  (t) => {
+    for (const limits of [
+      [{ Name: 'nofile', Soft: 32, Hard: 4096 }],
+      [{ Name: 'nofile', Soft: 1024, Hard: 32_768 }],
+      [daemonUlimits[0], daemonUlimits[0]],
+      [{ Name: 'nofile', Soft: true, Hard: 4096 }],
+    ]) {
+      const f = fixture(t, { daemonUlimits }, true);
+      f.edit((state) => {
+        state.containers[f.containerId].HostConfig.Ulimits = limits;
+      });
+      const result = f.run('install', 'y\n\n\n');
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /Ulimits/);
+      assert.equal(f.read().containers[f.containerId].State.Running, true);
+      assert.equal(dockerCalls(f.read(), 'container stop').length, 0);
+      assert.equal(dockerCalls(f.read(), 'image rm').length, 0);
+    }
+  },
+);
 
 cliTest('readiness failure after start restores the old running version', (t) => {
   const f = fixture(t, { failReadyVersion: 'v1.0.0' }, true);
