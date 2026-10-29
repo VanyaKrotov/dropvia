@@ -1,0 +1,26 @@
+import { useState, type ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { I18nextProvider } from 'react-i18next';
+import { MotionConfig } from 'framer-motion';
+import { createTranslations, type Locale } from '@shared/i18n/config';
+
+export function Providers({ locale, children }: { locale: Locale; children: ReactNode }) {
+  const [i18n] = useState(() => createTranslations(locale));
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: { staleTime: 30_000, retry: 1, refetchOnWindowFocus: false },
+          mutations: { retry: false },
+        },
+      }),
+  );
+
+  return (
+    <I18nextProvider i18n={i18n}>
+      <QueryClientProvider client={queryClient}>
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      </QueryClientProvider>
+    </I18nextProvider>
+  );
+}

@@ -16,9 +16,11 @@ const skillRoot = path.join(root, '.agents/skills');
 
 async function collect(directory, prefix = '') {
   const files = {};
+
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     assert(!entry.isSymbolicLink(), `Unexpected skill symlink: ${prefix}${entry.name}`);
     const relative = `${prefix}${entry.name}`;
+
     if (entry.isDirectory()) {
       Object.assign(
         files,
@@ -28,24 +30,30 @@ async function collect(directory, prefix = '') {
       const content = await readFile(path.join(directory, entry.name));
       // Git text checkout may normalize CRLF. The registry is intentionally LF-normalized.
       const normalized = content.toString('utf8').replaceAll('\r\n', '\n');
+
       files[relative] = createHash('sha256').update(normalized).digest('hex');
     }
   }
+
   return files;
 }
 
 const names = sources.map((entry) => entry.name).sort();
+
 assert.equal(new Set(names).size, names.length, 'Duplicate skill manifest names');
+
 assert.deepEqual(
   Object.keys(lock.skills).sort(),
   names,
   'Skills CLI lock does not match registry',
 );
+
 assert.deepEqual(
   Object.keys(expected.skills).sort(),
   names,
   'Integrity registry has missing/extra skills',
 );
+
 assert.deepEqual(
   (await readdir(skillRoot, { withFileTypes: true }))
     .filter((entry) => entry.isDirectory())
@@ -56,6 +64,7 @@ assert.deepEqual(
 );
 
 let checkedFiles = 0;
+
 for (const entry of sources) {
   assert.match(entry.commit, /^[0-9a-f]{40}$/, `Unpinned source: ${entry.name}`);
   assert.equal(
@@ -64,6 +73,7 @@ for (const entry of sources) {
     `Unpinned CLI lock: ${entry.name}`,
   );
   const manifest = await readFile(path.join(skillRoot, entry.name, 'SKILL.md'), 'utf8');
+
   assert.match(manifest, /^---\r?\n/, `Missing frontmatter: ${entry.name}`);
   assert.match(
     manifest,
@@ -72,6 +82,7 @@ for (const entry of sources) {
   );
   assert.match(manifest, /^description:\s*\S/m, `Missing description: ${entry.name}`);
   const files = await collect(path.join(skillRoot, entry.name));
+
   assert.deepEqual(
     files,
     expected.skills[entry.name],

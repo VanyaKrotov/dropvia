@@ -19,7 +19,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['app/**/*.{ts,tsx}', 'tests/**/*.{ts,tsx}', '*.ts'],
+    files: ['src/**/*.{ts,tsx}', 'tests/**/*.{ts,tsx}', '*.ts'],
     languageOptions: {
       parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
@@ -37,6 +37,23 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
     },
   },
+  ...[
+    ['shared', ['app', 'pages', 'widgets', 'features', 'entities']],
+    ['entities', ['app', 'pages', 'widgets', 'features']],
+    ['features', ['app', 'pages', 'widgets']],
+    ['widgets', ['app', 'pages']],
+    ['pages', ['app']],
+  ].map(([layer, forbidden]) => ({
+    files: [`src/${layer}/**/*.{ts,tsx}`],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: forbidden.flatMap((name) => [`**/${name}/**`, `@${name}/**`]),
+        },
+      ],
+    },
+  })),
   {
     files: ['scripts/**/*.mjs', '*.mjs'],
     languageOptions: {
@@ -49,4 +66,9 @@ export default tseslint.config(
     },
   },
   prettier,
+  {
+    rules: {
+      curly: ['error', 'all'],
+    },
+  },
 );

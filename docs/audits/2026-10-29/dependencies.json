@@ -1,0 +1,429 @@
+{
+  "method": "TypeScript AST imports and dynamic imports, TypeScript module resolution; production TS/TSX only",
+  "files": 57,
+  "edges": 105,
+  "violations": [],
+  "cycles": [],
+  "imports": [
+    {
+      "from": "src/app/providers.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/root.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/api-access.ts",
+      "to": "src/features/request-access/api/submit.server.ts"
+    },
+    {
+      "from": "src/app/routes/api-access.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/app/routes/api-download.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/app/routes/api-files.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/app/routes/api-shares.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/app/routes/api-status.ts",
+      "to": "src/entities/service-health/status.server.ts"
+    },
+    {
+      "from": "src/app/routes/api-status.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/app/routes/api-upload.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/app/routes/api.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/api.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/api.tsx",
+      "to": "src/pages/api/api-page.tsx"
+    },
+    {
+      "from": "src/app/routes/file-server.tsx",
+      "to": "src/entities/service-health/model.ts"
+    },
+    {
+      "from": "src/app/routes/file-server.tsx",
+      "to": "src/entities/service-health/status.server.ts"
+    },
+    {
+      "from": "src/app/routes/file-server.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/file-server.tsx",
+      "to": "src/pages/file-server/file-server-page.tsx"
+    },
+    {
+      "from": "src/app/routes/file-server.tsx",
+      "to": "src/widgets/site-shell/site-shell.tsx"
+    },
+    {
+      "from": "src/app/routes/file-server.tsx",
+      "to": "src/app/providers.tsx"
+    },
+    {
+      "from": "src/app/routes/home.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/home.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/home.tsx",
+      "to": "src/features/request-access/api/submit.server.ts"
+    },
+    {
+      "from": "src/app/routes/home.tsx",
+      "to": "src/pages/landing/landing-page.tsx"
+    },
+    {
+      "from": "src/app/routes/prices.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/prices.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/prices.tsx",
+      "to": "src/pages/prices/prices-page.tsx"
+    },
+    {
+      "from": "src/app/routes/privacy.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/privacy.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/privacy.tsx",
+      "to": "src/pages/legal/legal-page.tsx"
+    },
+    {
+      "from": "src/app/routes/sign-in.tsx",
+      "to": "src/features/sign-in/api/submit.server.ts"
+    },
+    {
+      "from": "src/app/routes/sign-in.tsx",
+      "to": "src/pages/sign-in/sign-in-page.tsx"
+    },
+    {
+      "from": "src/app/routes/sign-in.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/sign-in.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/sign-in.tsx",
+      "to": "src/widgets/site-shell/site-shell.tsx"
+    },
+    {
+      "from": "src/app/routes/sign-in.tsx",
+      "to": "src/app/providers.tsx"
+    },
+    {
+      "from": "src/app/routes/site.tsx",
+      "to": "src/app/providers.tsx"
+    },
+    {
+      "from": "src/app/routes/site.tsx",
+      "to": "src/widgets/site-shell/site-shell.tsx"
+    },
+    {
+      "from": "src/app/routes/status.tsx",
+      "to": "src/entities/service-health/status.server.ts"
+    },
+    {
+      "from": "src/app/routes/status.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/status.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/status.tsx",
+      "to": "src/pages/status/status-page.tsx"
+    },
+    {
+      "from": "src/app/routes/terms.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/app/routes/terms.tsx",
+      "to": "src/shared/seo/metadata.ts"
+    },
+    {
+      "from": "src/app/routes/terms.tsx",
+      "to": "src/pages/legal/legal-page.tsx"
+    },
+    {
+      "from": "src/entities/service-health/query.ts",
+      "to": "src/entities/service-health/model.ts"
+    },
+    {
+      "from": "src/entities/service-health/status.server.ts",
+      "to": "src/entities/service-health/model.ts"
+    },
+    {
+      "from": "src/pages/api/api-page.tsx",
+      "to": "src/shared/ui/code-window.tsx"
+    },
+    {
+      "from": "src/pages/api/api-page.tsx",
+      "to": "src/pages/api/examples.ts"
+    },
+    {
+      "from": "src/pages/api/api-page.tsx",
+      "to": "src/pages/api/endpoint-reference.tsx"
+    },
+    {
+      "from": "src/pages/api/endpoint-reference.tsx",
+      "to": "src/shared/ui/code-window.tsx"
+    },
+    {
+      "from": "src/pages/api/endpoint-reference.tsx",
+      "to": "src/pages/api/examples.ts"
+    },
+    {
+      "from": "src/pages/api/examples.ts",
+      "to": "src/entities/file/model.ts"
+    },
+    {
+      "from": "src/pages/api/examples.ts",
+      "to": "src/entities/service-health/model.ts"
+    },
+    {
+      "from": "src/pages/file-server/file-server-page.tsx",
+      "to": "src/entities/service-health/model.ts"
+    },
+    {
+      "from": "src/pages/file-server/file-server-page.tsx",
+      "to": "src/entities/service-health/query.ts"
+    },
+    {
+      "from": "src/pages/file-server/file-server-page.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/pages/file-server/file-server-page.tsx",
+      "to": "src/shared/ui/brand-mark.tsx"
+    },
+    {
+      "from": "src/pages/file-server/file-server-page.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/pages/file-server/file-server-page.tsx",
+      "to": "src/shared/ui/language-switch.tsx"
+    },
+    {
+      "from": "src/pages/landing/file-experience.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/widgets/file-scene/file-scene.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/features/request-access/ui/request-access.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/shared/ui/code-window.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/shared/ui/accordion-item.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/pages/landing/product-stories.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/pages/landing/file-experience.tsx"
+    },
+    {
+      "from": "src/pages/landing/landing-page.tsx",
+      "to": "src/pages/landing/use-landing-motion.ts"
+    },
+    {
+      "from": "src/pages/landing/product-stories.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/pages/landing/product-stories.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/pages/landing/product-stories.tsx",
+      "to": "src/widgets/pricing/pricing.tsx"
+    },
+    {
+      "from": "src/pages/landing/product-stories.tsx",
+      "to": "src/widgets/file-scene/browser-frames.tsx"
+    },
+    {
+      "from": "src/pages/legal/legal-page.tsx",
+      "to": "src/shared/i18n/en.ts"
+    },
+    {
+      "from": "src/pages/legal/legal-page.tsx",
+      "to": "src/shared/i18n/ru.ts"
+    },
+    {
+      "from": "src/pages/prices/prices-page.tsx",
+      "to": "src/widgets/pricing/pricing.tsx"
+    },
+    {
+      "from": "src/pages/prices/prices-page.tsx",
+      "to": "src/shared/ui/accordion-item.tsx"
+    },
+    {
+      "from": "src/pages/sign-in/sign-in-page.tsx",
+      "to": "src/features/sign-in/model/credentials.ts"
+    },
+    {
+      "from": "src/pages/sign-in/sign-in-page.tsx",
+      "to": "src/features/sign-in/ui/sign-in-form.tsx"
+    },
+    {
+      "from": "src/pages/sign-in/sign-in-page.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/pages/sign-in/sign-in-page.tsx",
+      "to": "src/shared/ui/brand-mark.tsx"
+    },
+    {
+      "from": "src/pages/sign-in/sign-in-page.tsx",
+      "to": "src/shared/ui/language-switch.tsx"
+    },
+    {
+      "from": "src/pages/status/status-page.tsx",
+      "to": "src/entities/service-health/model.ts"
+    },
+    {
+      "from": "src/pages/status/status-page.tsx",
+      "to": "src/entities/service-health/query.ts"
+    },
+    {
+      "from": "src/pages/status/status-page.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/shared/i18n/config.ts",
+      "to": "src/shared/i18n/en.ts"
+    },
+    {
+      "from": "src/shared/i18n/config.ts",
+      "to": "src/shared/i18n/ru.ts"
+    },
+    {
+      "from": "src/shared/seo/metadata.ts",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/shared/ui/code-window.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/shared/ui/language-switch.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/widgets/file-scene/file-scene.tsx",
+      "to": "src/widgets/file-scene/browser-frames.tsx"
+    },
+    {
+      "from": "src/widgets/pricing/pricing.tsx",
+      "to": "src/entities/plan/model.ts"
+    },
+    {
+      "from": "src/widgets/pricing/pricing.tsx",
+      "to": "src/shared/ui/icon.tsx"
+    },
+    {
+      "from": "src/widgets/pricing/pricing.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/widgets/site-shell/site-shell.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/widgets/site-shell/site-shell.tsx",
+      "to": "src/shared/ui/brand-mark.tsx"
+    },
+    {
+      "from": "src/widgets/site-shell/site-shell.tsx",
+      "to": "src/shared/ui/language-switch.tsx"
+    },
+    {
+      "from": "src/features/request-access/api/submit.server.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/features/request-access/api/submit.server.ts",
+      "to": "src/features/request-access/model/request.ts"
+    },
+    {
+      "from": "src/features/request-access/ui/request-access.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/features/request-access/ui/request-access.tsx",
+      "to": "src/features/request-access/model/request.ts"
+    },
+    {
+      "from": "src/features/sign-in/api/submit.server.ts",
+      "to": "src/shared/server/http.ts"
+    },
+    {
+      "from": "src/features/sign-in/api/submit.server.ts",
+      "to": "src/features/sign-in/model/credentials.ts"
+    },
+    {
+      "from": "src/features/sign-in/ui/sign-in-form.tsx",
+      "to": "src/shared/i18n/config.ts"
+    },
+    {
+      "from": "src/features/sign-in/ui/sign-in-form.tsx",
+      "to": "src/features/sign-in/model/credentials.ts"
+    }
+  ]
+}

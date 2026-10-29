@@ -1,72 +1,91 @@
 # Dropvia
 
-Инженерная основа сервиса загрузки, передачи и скачивания файлов для [dropvia.fun](https://dropvia.fun). React 19, TypeScript, React Router 8 Framework Mode с SSR, Tailwind 4 и Node.js. Публикация и deployment не выполнялись.
+Сервис файлового хранения с закрытой регистрацией: лендинг, приглашения, тарифы, API reference, статусы и правовые страницы. React19 + TypeScript strict, React Router8 Framework Mode с настоящим SSR, Tailwind4, Node runtime. Архитектура FSD в `src/`.
 
-Сейчас доступен честный подготовительный экран: English по умолчанию на `/`, русский на `/ru`, SSR-переключение языка, canonical и hreflang. Аудитория — обычные пользователи простого файлового хранилища. Передача файлов, серверное хранение, аккаунты и меры защиты ещё не определены и не реализованы. `DESIGN.md` сохранён как главный визуальный источник: это reference AuthKit, продуктовые пробелы явно перечислены в [LANDING_STRUCTURE](docs/LANDING_STRUCTURE.md).
+## Запуск
 
-## Начало работы
+Node22.22+ (поддерживаемая версия в `.nvmrc`) и npm. Зависимости закреплены в lockfile, lifecycle scripts отключены в `.npmrc`.
 
-Node.js **22.22.3** (`.nvmrc`) и npm 11.16.0 — проверенная среда. Runtime Router требует Node ≥22.22.0, некоторые dev-зависимости — ≥22.22.2. Для другого LTS сначала проверить engines полного dependency tree.
-
-```sh
+```bash
 npm ci --include=dev
-npx playwright install chromium
 npm run dev
 ```
 
-Dev server: `http://127.0.0.1:5173`. Lifecycle scripts зависимостей отключены в `.npmrc`; текущий toolchain использует опубликованные platform packages. Не включайте все scripts для новой зависимости: изучите конкретную потребность.
+Открыть http://127.0.0.1:5173. Production:
 
-## Команды
-
-| Команда                                   | Назначение                                                     |
-| ----------------------------------------- | -------------------------------------------------------------- |
-| `npm run dev`                             | Официальный React Router Vite dev server                       |
-| `npm run lint`                            | ESLint 10, TypeScript и React Hooks, warnings запрещены        |
-| `npm run typecheck`                       | Generated route types + strict TypeScript                      |
-| `npm run format` / `npm run format:check` | Prettier; vendored skills и исходный DESIGN исключены          |
-| `npm run test` / `npm run test:watch`     | Vitest + Testing Library                                       |
-| `npm run build`                           | Production client и SSR server builds                          |
-| `npm start`                               | Node server из `build/server/index.js`, по умолчанию порт 3000 |
-| `npm run test:ssr`                        | HTTP HTML/metadata, no-JS, 404 и resource routes               |
-| `npm run test:e2e`                        | Production server + Chromium mobile/tablet/desktop + axe       |
-| `npm run skills:verify`                   | Manifests, источники, лицензии и SHA-256 ресурсов              |
-| `npm run check`                           | Полная последовательность обязательных проверок                |
-
-Playwright сам поднимает production server на `127.0.0.1:4173` и останавливает его; сначала нужен build. Скриншоты каждого размера — `test-results/**/page.png`, отчёт — `playwright-report/index.html`. Эти генерируемые файлы не хранятся в Git. В CI они загружаются как artifacts.
-
-Для ручного production preview:
-
-```sh
+```bash
 npm run build
 npm start
 ```
 
-Порт и hostname задаются стандартными `PORT` и `HOST` environment variables `react-router-serve`; secrets в клиентскую сборку не добавлять. Официальный default SSR entry использует явно закреплённый `isbot`, чтобы поисковые роботы получали завершённую разметку. Свой server/entry без необходимости не нужен.
+SSR server использует PORT/HOST среды; при отсутствии PORT стандартный порт3000.
 
-## Codex и Agent Skills
+## Импорты
 
-Сначала [AGENTS.md](AGENTS.md), затем требования [DESIGN.md](DESIGN.md) и относящиеся local skills. Все 22 выбранных skill находятся в `.agents/skills/` и доступны после checkout без installer. Точные названия, commits, причины выбора и ограничения — [SKILLS.md](docs/SKILLS.md). Откройте новую реплику/сессию Codex, если каталог не обновился; при необходимости перезапустите Codex.
+Для src/ настроены aliases в tsconfig.json: `@app/`, `@pages/`, `@widgets/`, `@features/`, `@entities/`, `@shared/`. Vite и Vitest используют эту же карту без дополнительных зависимостей.
 
-Codex обнаруживает manifests, но это не гарантирует их механического применения: `AGENTS.md` требует фактического чтения подходящего SKILL.md, references и проверки результата. CI проверяет целостность и качество кода; он не способен доказать, что агент следовал каждой текстовой инструкции.
-
-Проверенные source snapshots установлены Skills CLI 1.7.4 с `-a codex --copy -y`, без `-g`. UI/UX Pro Max собран официальным Codex template renderer из закреплённого source commit; его проверенный source version не совпал с npm-публикацией, поэтому случайный другой npm release не исполнялся. Impeccable работает по references вручную, без скачивания engine и без hooks.
-
-Не запускайте `skills update`/`experimental_install` вслепую: три manifest имеют локальные уникальные имена, UI/UX template генерируется, и direct reinstall может вернуть дубликаты или потерять adaptations. Обновление: выбрать новый commit → изучить diff/license/scripts/references → установить в отдельный temp → перенести только выбранный навык → повторить задокументированные aliases → обновить `docs/skills-sources.json` → `node scripts/snapshot-skills.mjs --write` → `npm run skills:verify` → review. Сам `snapshot-skills` ничего не скачивает и не запускает vendored code.
-
-UI/UX search требует Python 3 (stdlib only):
-
-```sh
-python .agents/skills/ui-ux-pro-max/scripts/search.py "visible keyboard focus" --domain ux
+```ts
+import { SignInForm } from '@features/sign-in/ui/sign-in-form';
+import { localizedPath } from '@shared/i18n/config';
 ```
 
-Python — необязательный инструмент дизайнера, не runtime приложения и не зависимость CI. Taste optional scripts требуют Node 22 и Chromium; их рекомендации уступают утверждённой дизайн-системе.
+Generated route types импортируются через `./+types/...`, как требует React Router. Направления импортов FSD контролирует ESLint.
 
-## Документы и качество
+## Страницы
 
-- [ARCHITECTURE](docs/ARCHITECTURE.md): SSR request path, границы, версии, будущие file contracts.
-- [DESIGN_SYSTEM](docs/DESIGN_SYSTEM.md): реальные tokens, responsive/type/focus/motion решения.
-- [LANDING_STRUCTURE](docs/LANDING_STRUCTURE.md): факты, missing brief, весь текущий текст и SEO-план.
-- [SKILLS](docs/SKILLS.md): выбор, install provenance, лицензии, discovery и конфликты.
-- [VERIFICATION](docs/VERIFICATION.md): фактические команды, review и визуальные свидетельства.
+| English  | Русский     | Назначение                                         |
+| -------- | ----------- | -------------------------------------------------- |
+| /        | /ru         | Лендинг и форма приглашения #request-access        |
+| /prices  | /ru/prices  | Предложения по приглашению, сравнение, FAQ         |
+| /terms   | /ru/terms   | Условия использования                              |
+| /privacy | /ru/privacy | Уведомление о конфиденциальности                   |
+| /status  | /ru/status  | Статусы четырёх компонентов, polling30s            |
+| /api/    | /ru/api/    | Семь API-операций, cURL/JavaScript/Python          |
+| /sign-in | /ru/sign-in | Email/password, SSR-форма входа и ссылка на заявку |
 
-GitHub Actions `Quality` настроен для Ubuntu и Windows. Branch protection/required status checks на GitHub не менялись: workflow станет выполняться после push. Обе подготовительные страницы имеют noindex. `/sitemap.xml` пока 204 без тела и не рекламируется в robots; валидный XML и Sitemap directive добавляются с первыми индексируемыми страницами при запуске продукта. Field CWV и полное соответствие WCAG требуют отдельных реальных измерений.
+Язык определяется URL на сервере; английский по умолчанию. `react-i18next`/`i18next` создаются изолированно на дерево SSR. Ссылки переключают язык с сохранением страницы/query/hash. Темы следуют системному `prefers-color-scheme`, без flash/hydration scripts. Framer Motion уважает reduced-motion. Даты — date-fns, статус UTC.
+
+Технические SSR-страницы узлов доступны напрямую: `/_data/D01`, `/_data/D02` и русские `/ru/_data/D01`, `/ru/_data/D02`. Они публичны, но отсутствуют в навигации и sitemap; установлены noindex/nofollow. Неизвестный узел возвращает404. Новые узлы добавляются явно в реестр service-health.
+
+## API и данные
+
+Кнопка общей шапки ведёт на страницу входа. Форма отправляет POST на тот же сервер, работает с JS и без него, валидирует email/password и показывает pending/error. По контракту владельца заглушка возвращает400 «Клиент с такими данными не найден». Приложение не сохраняет, не логирует и не отражает пароль в ответах; cookies/tokens не создаются. Реальная проверка аккаунтов и сессии ещё не подключены. Свободная регистрация закрыта, ссылка под формой ведёт к заявке на главной.
+
+`/api/v1/upload/:uuid?` POST403; `/download/:uuid?` GET404; `/files/:uuid` GET404/DELETE403; `/shares/:uuid` POST403; `/status` GET200; `/access-requests` POST201.
+
+**Текущая серверная реализация намеренно соответствует запросу на заглушки.** Заявка проверяется и подтверждается, но не записывается в БД и не отправляет письмо. Статусы и задержки генерируются и хранятся в памяти процесса60s; страницы узлов, /status и API читают общий снимок. Перезапуск сбрасывает память, отдельные процессы не разделяют её;89% снимков полностью исправны, иначе деградирует один компонент. Это не реальный uptime. Файлы не принимаются. Подключение хранилища, auth, реальной очереди приглашений, email и мониторинга — отдельная следующая работа. Подробности/валидация/production gates в `docs/API.md`.
+
+TanStack Query получает начальные статусы из loader, продолжает polling и сохраняет последний снимок при ошибке. Форма использует mutation без retry, а без JS — нативную отправку в index Router action с тем же обработчиком.201 отображает подтверждение в форме. Body limit16384bytes, origin/consent/email validation, единые JSON errors, no-store.
+
+## Структура
+
+`src/app`→`pages`→`widgets`→`features`→`entities`→`shared`. ESLint запрещает обратные импорты слоёв. Generated route types и build output не коммитятся. Нет Next.js, SPA-only router или копии API в клиенте. Подробнее `docs/ARCHITECTURE.md`.
+
+## Проверки
+
+```bash
+npm run lint
+npm run typecheck
+npm run format:check
+npm run test
+npm run build
+npx playwright install chromium
+npm run test:ssr
+npm run test:e2e
+npm run skills:verify
+npm run check
+```
+
+Playwright запускает production SSR server на127.0.0.1:4173 и останавливает его. Проверяет desktop/tablet/mobile, обе темы и языки, axe, SSR без JS, формы, polling и API. Скриншоты в test-results, HTML-отчёт в playwright-report; эти артефакты исключены из Git. `check` объединяет полный набор. GitHub Actions запускает проверки на Ubuntu/Windows; локальные проверки не означают выполненный remote CI.
+
+## Дизайн, контент и Agent Skills
+
+`DESIGN.md` — неизменённый визуальный источник. `PRODUCT.md` — подтверждённые факты. `AGENTS.md` — обязательный порядок работы и матрица активации22 локальных skills. Читайте конкретный `.agents/skills/<name>/SKILL.md` и нужные references перед задачей, а не объявляйте использование по названию.
+
+`docs/SKILLS.md` содержит источники, commits, лицензии, установку и ограничения. `npm run skills:verify` проверяет manifests и351 vendored files. Не запускать сторонние hooks, Impeccable binary launcher или глобальные установки. Обновление требует проверки upstream и осознанного обновления integrity baseline, не слепого skills update. Skills не гарантируют соблюдение рекомендаций без чтения и review.
+
+Документация: `docs/DESIGN_SYSTEM.md`, `docs/LANDING_STRUCTURE.md`, `docs/API.md`, `docs/ARCHITECTURE.md`. Последние результаты — `docs/SERVICE_VERIFICATION.md`; старый `docs/VERIFICATION.md` относится только к первоначальной основе.
+
+## До реального запуска
+
+Нужны фактические условия хранения/тарифы и сведения об операторе/юрисдикции/провайдерах/retention для юридического review. Тексты правовых страниц ограничены поведением публичного сайта, не подтверждают соответствие всем законам. Пока сохранён noindex, sitemap204; при разрешённом запуске metadata/sitemap/robots обновляются вместе. Деплой, реальные платежи и внешние интеграции не выполнялись.

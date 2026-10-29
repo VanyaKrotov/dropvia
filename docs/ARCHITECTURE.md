@@ -1,59 +1,78 @@
 # Архитектура Dropvia
 
-## Состояние и решение
+Обновлено 28 октября 2026. Решение владельца: Feature-Sliced Design в `src/`, React Router 8.5.1 Framework Mode, SSR, Node runtime, React19.3.1, TypeScript6 strict, Tailwind4.3.3. Исходный подготовительный экран заменён; `DESIGN.md` сохранён.
 
-На старте существовал только `DESIGN.md`, без package.json и commits. Исходный файл сохранён. Принята feature-oriented организация React Router Framework Mode с настоящим SSR на Node.js.
+## Слои и ответственность
 
-| Слой                        | Ответственность                                                                 | Ограничение                                |
-| --------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------ |
-| `app/root.tsx`              | HTML document, URL locale, Links/Meta/Scripts, Outlet, безопасный ErrorBoundary | Не содержит продуктовую логику             |
-| `app/routes.ts`             | Явный реестр маршрутов                                                          | Нет параллельного client router            |
-| `app/routes/`               | Route modules, metadata, resource responses                                     | Компактные, типы `./+types/*` генерируются |
-| `app/features/coming-soon/` | Честный подготовительный экран                                                  | Не принимает файлы и персональные данные   |
-| `app/styles/app.css`        | Tailwind theme и базовые состояния                                              | Согласован с `DESIGN.md`                   |
-| `tests/e2e/`                | Production SSR, no-JS, metadata, 404, keyboard, axe, responsive                 | Не заменяет визуальный просмотр            |
-| `.agents/skills/`           | Проверенные локальные навыки                                                    | Не попадают в runtime bundle               |
-| `docs/`                     | Решения, контент и воспроизводимые свидетельства                                | Факты отделены от планов                   |
+```text
+src/
+  app/                 # root, routes.ts, route adapters, providers, global theme
+  pages/               # landing, prices, legal, api, status
+  widgets/             # site-shell, file-scene
+  features/
+    request-access/    # invitation form and server validation
+    sign-in/           # credentials form and bounded server submission
+  entities/
+    file/             # shared FileResource contract for API reference
+    service-health/   # snapshot types, boundary parser, server generator
+  shared/
+    i18n/              # en/ru resources and isolated instances
+    seo/               # localized metadata
+    server/            # bounded HTTP body and error responses
+    ui/                # consistent SVG geometry
+```
 
-Общие `components/ui`, `components/layout`, hooks и server modules появятся при реальном использовании, а не заранее.
+Import order: app → pages → widgets → features → entities → shared. A layer can skip lower layers. Slices do not import their peers. ESLint prevents upward imports; no barrels or empty scaffolding. Cross-layer imports use explicit files. Server-only functions are `.server.ts`; Router strips loader/action code from browser modules. API request bodies and secrets never become loaderData.
 
-## Выполнение запроса
+## Алиасы импортов
 
-`HTTP request → @react-router/serve → server build → route module → React HTML → hydration`.
+Единственный источник соответствий — compilerOptions.paths в tsconfig.json:
 
-Vite использует официальный `reactRouter()` plugin. `react-router.config.ts` явно включает `ssr: true`. `react-router build` создаёт `build/client` и `build/server/index.js`; `npm start` запускает официальный Node server. Framework default entry points обеспечивают server render и hydration; копировать их без причины не нужно.
+| Алиас       | Директория     |
+| ----------- | -------------- |
+| @app/*      | src/app/*      |
+| @pages/*    | src/pages/*    |
+| @widgets/*  | src/widgets/*  |
+| @features/* | src/features/* |
+| @entities/* | src/entities/* |
+| @shared/*   | src/shared/*   |
 
-`/` (English default) и `/ru` отдают локализованный текст и metadata до JavaScript. Язык HTML вычисляется из SSR router location (`useLocation` + общий `localeFromPath`), без browser APIs и лишнего loader запроса. Это работает даже на `/ru/missing`, когда Router не запускает loaders. Два компактных route modules переиспользуют один feature и metadata builder. Обычные языковые ссылки работают без JS, reciprocal hreflang включает en/ru/x-default. `/robots.txt` отдаёт text/plain; `/sitemap.xml` пока 204 без тела, поскольку индексируемых URL нет. Неизвестный путь возвращает 404, а не SPA fallback 200. В error HTML есть локализованный title и нет stack traces, raw error messages и canonical главной.
+Vite8 и Vitest5 используют resolve.tsconfigPaths=true; дополнительные plugins и deprecated baseUrl не нужны. Импорт указывает конкретный файл, например `@features/sign-in/model/credentials`; алиасы не требуют index/barrel файлов и не отменяют направление FSD. ESLint проверяет как относительные пути, так и alias prefixes. Type-only imports также используют aliases. Generated `./+types/*` остаётся относительным для Router rootDirs; route registration strings, CSS @import и Node new URL являются другими механизмами и не переписываются.
 
-## Данные и будущие файлы
+## SSR и маршрутизация
 
-Серверных файловых данных и мутаций пока нет, поэтому product loaders/actions не добавлены для формальности. Язык — часть router location, не загружаемые данные. Официальный default server entry использует явно закреплённый `isbot` 5.2.2 для завершённого bot rendering. Когда появится утверждённый upload contract:
+`react-router.config.ts`: `appDirectory: 'src/app'`, `ssr: true`. Official React Router Vite integration. Root renders HTML/links/metadata/errors. Optional `:lang?` site layout accepts only Russian `ru` or the default English; unsupported language segments404. Each page has a compact route adapter and generated Route types. Resource routes precede the site hierarchy and return JSON without site markup.
 
-- `loader` читает только необходимые безопасные данные; типы — `Route.LoaderArgs`, потребление — `useLoaderData<typeof loader>()` или `Route.ComponentProps`.
-- `action` принимает серверные формы, валидирует `unknown`, возвращает field errors с HTTP 400 или redirect. `Form`/fetcher показывает pending и позволяет повторить ошибку.
-- Node/storage/secrets изолируются в `.server.ts`. Клиент получает публичные модели, никогда ключи или внутренние paths.
-- До загрузки определить размер, multipart/streaming, quotas, storage, TTL, авторизацию ссылок, abuse handling и политику удаления. Текущая основа этого не реализует и никаких гарантий не делает.
-- Не хранить request/user state на уровне общего server module. Не применять Next.js caching и RSC APIs.
+Pages: `/`, `/prices`, `/terms`, `/privacy`, `/status`, `/api/`, `/sign-in`; mirrors `/ru`, `/ru/prices`, etc. Canonical/hreflang/OG/Twitter are generated for each pair. Status uses a loader to create the first snapshot. Static pages need no dummy loaders. Site loader validates language. Main content exists in server HTML without hydration. ErrorBoundary determines locale from the URL even when no loader ran.
 
-Feature импортирует общие primitives и lib; primitives не импортируют feature/routes. Не создавать слои-посредники, пока сложность действительно не появилась. Нет глобального store и дополнительных runtime UI-библиотек.
+## Переводы и темы
 
-## Версии
+`react-i18next`17.1.9 + `i18next`26.5.11. Every provider creates its own synchronous initialized instance with local resources; immutable dictionaries can be shared, mutable language cannot. Language comes from URL, never browser storage or device detection. Language links preserve route/query/hash. English stays default regardless of Accept-Language. Locale key recreates providers on a language switch. No effect-fetch for translations or initial data.
 
-React/DOM 19.3.1, React Router dev/node/serve/runtime 8.5.1, Vite 8.3.5, Tailwind/Vite adapter 4.3.3, TypeScript 6.0.3. TypeScript 7 доступен, но typescript-eslint пока декларирует TS `<6.1`. ESLint 10.13.0 поддерживается typescript-eslint и React Hooks plugin. `eslint-plugin-jsx-a11y` пока декларирует максимум ESLint 9; он исключён, поскольку ESLint 9 уже EOL. Accessibility проверяется axe, keyboard и браузером. Нет force/legacy-peer-deps. Node development baseline — 22.22.3; Router требует минимум 22.22.0. Точные transitive версии — package-lock.json.
+CSS `prefers-color-scheme` chooses semantic light/dark tokens on first paint and when device appearance changes. Identical HTML in both themes; no bootstrap script, cookie or hydration suppression. `framer-motion`14.7.1 MotionConfig respects reduced-motion. `date-fns`4.4.0 formats policy dates and parses status timestamps; actual status times use explicit UTC.
 
-## Prerender и SEO
+## Работа с данными
 
-SSR включён всегда. По мере появления подтверждённых статических страниц можно добавить `prerender: ['/approved-static-route']` рядом с `ssr: true`; API сначала сверить с docs установленной версии. Главная пока динамически SSR, чтобы smoke test проверял серверный путь. Приватные file links не prerender и не индексировать. Обе языковые версии подготовительные и имеют noindex. Endpoint sitemap зарезервирован и возвращает 204; пустой XML urlset не соответствует XSD, требующей минимум один URL. При запуске продукта обновить контент, robots metadata, валидный XML sitemap и robots Sitemap directive вместе с тестами.
+TanStack Query5.105.0 owns client server-state. QueryClient is per provider/request, not shared across server renders. Status initialData is the loader snapshot; initialDataUpdatedAt is the loader receivedAt (checkedAt remains the generation time), staleTime/refetchInterval30s. Hidden/background polling disabled, offline requests paused by Query defaults, unmount abort signal and10s timeout. Failed refresh retains last data with a visible stale alert. Runtime parser rejects malformed/duplicate services.
 
-## Контроль
+Form: TanStack mutation POSTs JSON to `/api/v1/access-requests`; pending disables repeat submission,15s timeout, no automatic retries. Native no-JS form POSTs to `/?index` or `/ru?index`; index Router action calls the identical server handler and renders201 acknowledgement. Both paths validate input/origin/consent and bound streamed bodies. Native refresh can resubmit; real persistence must add idempotency.
 
-ESLint: базовый TS, promises, React Hooks; Prettier — единственный formatter. Vitest + Testing Library проверяют безопасные пользовательские ошибки. Playwright запускает production server и проверяет SSR/no-JS и UI на трёх размерах; axe проверяет WCAG 2 A/AA, WCAG 2.1/2.2 AA rules, доступные движку. CI использует npm ci, pinned actions, минимальный read-only token.
+See `docs/API.md` for seven operations and launch gates. Current contract returns acknowledgements without persistence/mail, file operations remain restricted. Status is generated data, not real monitoring. No database, authentication or object storage is implied.
 
-Lifecycle scripts npm выключены через `.npmrc`. Текущий toolchain работает с опубликованными platform packages; если новая зависимость потребует install script, сначала изучить его и разрешить только конкретный обоснованный запуск. Не переключать ignore-scripts глобально.
+API reference owns illustrative request/response fixtures in `pages/api/examples.ts`; the shared file representation lives in `entities/file/model.ts`. `EndpointReference` keeps response selection local to one method. Examples include authorized success/error contracts and protocol headers, without changing resource handlers. Native response selects and language tabs only change displayed code; they never execute the documented requests. Logical file paths and nullable public URLs are described in `docs/API.md`.
 
-## Официальные источники
+## Проверки и расширение
 
-- [React Router: installation](https://reactrouter.com/8.5.1/start/framework/installation), [rendering](https://reactrouter.com/8.5.1/start/framework/rendering), [route modules](https://reactrouter.com/8.5.1/start/framework/route-module).
-- [React: effects](https://react.dev/learn/you-might-not-need-an-effect).
-- [Tailwind: Vite](https://tailwindcss.com/docs/installation/using-vite), [theme variables](https://tailwindcss.com/docs/theme).
-- Приоритет в разработке: документы пакета `node_modules/react-router/docs/` установленной версии.
+Sign-in is a standalone localized SSR route outside the marketing layout, with a compact brand/language header and shared SiteFooter. Its loader validates locale; its typed action invokes features/sign-in/api/submit.server.ts. A native Router Form sends email/password to this same route with username/current-password autocomplete. Client enhancement adds pending feedback and translated alerts; no-JS POST returns the same page and status. Requests are bounded to16KiB and checked for method, origin, media type and field shape. The owner requires at least8 UTF-16 units for the password; the shared validator enforces this and the existing1024-unit maximum on the client and server. The form uses noValidate and our own field error messages, rather than browser constraint popups. Invalid submissions focus the first invalid field and do not issue a client POST; editing updates existing errors. Server422 fieldErrors render under the same inputs even without JavaScript. No credential values are returned. Per the owner's stub contract, valid requests return400 with error=clientNotFound and a localized message. No identity backend or session issuance exists. The application does not log, persist or reflect credentials; HTML/data responses use no-store and noindex. The request-access link returns to the localized landing anchor. Real backend integration must add verification, session lifecycle and operational abuse controls before enabling successful login.
+
+Unit tests cover validation, synthetic distribution, parser, language isolation and error sanitization. Playwright covers SSR/no-JS, form success/failure, API contracts, polling lifecycle, both languages/themes, layouts and axe. CI matrix Windows/Ubuntu retained. `npm run check` is the local complete gate.
+
+Prerender can be enabled later for verified-static public routes using the installed framework API; never prerender private file URLs. Keep business behavior in feature/entity slices, not root layout. Add new dependencies only for an actual need. Do not add generic repositories, services, wrappers or global state before they carry behavior.
+
+## Unlisted file server pages and public status memory
+
+`/:lang?/_data/:uuid` is a standalone SSR route outside SiteHeader, with shared SiteFooter composed under the page inside its Providers. Default English and /ru are supported; uuid is the configured node code D01/D02, not a UUID format. The finite fileServers registry maps codes to existing download-01/download-02 service IDs. Unknown nodes or languages return404; future nodes must be explicitly registered with a corresponding service ID. The shared LanguageSwitch preserves the node/query/hash and supports native SSR navigation. Language links between the node language versions are explicitly permitted; there are no incoming global navigation links, no sitemap entry, no canonical/hreflang discovery links, and both robots metadata and X-Robots-Tag noindex/nofollow. No authentication wall is added; unlisted is not authorization.
+
+getStatusSnapshot in the .server.ts entity owns a process-local snapshot containing only public generated telemetry. It lazily regenerates after60s and returns defensive copies. API/status/node loaders all read it, so refreshing a page does not redraw values. No timer, persistence or per-visitor map is needed. Restart resets memory and separate processes have separate snapshots; shared monitoring/persistence is a future integration. No real uptime or network measurements are implied.
+
+Entity query options share30s visible-only polling, bounded requests, parsing and cancellation. Loaders send receivedAt separately from checkedAt so an aged cached snapshot does not trigger an unnecessary hydration refetch. Failed polling retains the last snapshot and shows a stale error. The node page uses the existing operational/degraded semantics, preserving the distinction between a degraded service and a proven full outage.

@@ -1,0 +1,48 @@
+[
+  {
+    "mode": "mobile",
+    "lighthouseVersion": "13.6.0",
+    "fetchedAt": "2026-10-28T13:17:09.443Z",
+    "scores": {
+      "performance": 1,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 0.66
+    },
+    "lcpMs": 760.566,
+    "cls": 0,
+    "tbtMs": 0,
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "source": "artifacts/quality/service-mobile.report.json"
+  },
+  {
+    "mode": "desktop",
+    "lighthouseVersion": "13.6.0",
+    "fetchedAt": "2026-10-28T13:17:10.047Z",
+    "scores": {
+      "performance": 1,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 0.66
+    },
+    "lcpMs": 206.60199999999998,
+    "cls": 0,
+    "tbtMs": 0,
+    "throttling": {
+      "rttMs": 40,
+      "throughputKbps": 10240,
+      "requestLatencyMs": 0,
+      "downloadThroughputKbps": 0,
+      "uploadThroughputKbps": 0,
+      "cpuSlowdownMultiplier": 1
+    },
+    "source": "artifacts/quality/service-desktop.report.json"
+  }
+]

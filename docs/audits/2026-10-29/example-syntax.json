@@ -1,0 +1,137 @@
+{
+  "scope": "Syntax only: Node --check, Python compile without execution, POSIX shlex tokenization; no live file requests",
+  "results": [
+    {
+      "endpoint": "upload",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "upload",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "upload",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "download",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "download",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "download",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "metadata",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "metadata",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "metadata",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "remove",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "remove",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "remove",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "share",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "share",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "share",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "health",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "health",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "health",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "access",
+      "language": "JavaScript",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "access",
+      "language": "Python",
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "endpoint": "access",
+      "language": "cURL",
+      "passed": true,
+      "diagnostic": ""
+    }
+  ],
+  "translations": {
+    "englishMessages": 331,
+    "russianMessages": 333,
+    "missingRussian": [],
+    "missingEnglish": []
+  }
+}

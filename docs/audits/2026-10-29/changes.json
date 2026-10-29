@@ -1,0 +1,65 @@
+{
+  "basis": "SHA-256 comparison to baseline.json; audit documentation not counted",
+  "files": [
+    {
+      "path": "scripts/check-codex-skills.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "src/app/routes/home.tsx",
+      "status": "modified"
+    },
+    {
+      "path": "src/app/styles/site.css",
+      "status": "modified"
+    },
+    {
+      "path": "src/entities/service-health/model.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/entities/service-health/status.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/features/request-access/api/submit.server.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/features/request-access/api/submit.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/legal/legal-page.tsx",
+      "status": "modified"
+    },
+    {
+      "path": "src/shared/i18n/en.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/shared/i18n/ru.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/shared/server/http.ts",
+      "status": "modified"
+    },
+    {
+      "path": "tests/e2e/service.spec.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/shared/server/http.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "tests/e2e/http-contracts.spec.ts",
+      "status": "added"
+    },
+    {
+      "path": "tests/e2e/legal.spec.ts",
+      "status": "added"
+    }
+  ]
+}

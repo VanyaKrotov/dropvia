@@ -18,8 +18,10 @@ const child = spawn(executable, ['app-server', '--stdio'], {
   windowsHide: true,
 });
 const lines = createInterface({ input: child.stdout });
+
 // Drain diagnostic output; it can contain user-level paths unrelated to this project.
 child.stderr.resume();
+
 const send = (message) => child.stdin.write(`${JSON.stringify(message)}\n`);
 
 try {
@@ -28,6 +30,7 @@ try {
       () => reject(new Error('Codex skills/list timed out')),
       30_000,
     );
+
     child.once('error', (error) => {
       clearTimeout(timer);
       reject(error);
@@ -38,17 +41,21 @@ try {
     });
     lines.on('line', (line) => {
       let message;
+
       try {
         message = JSON.parse(line);
       } catch {
         return;
       }
+
       if (message.id === 1) {
         if (message.error) {
           clearTimeout(timer);
           reject(new Error(message.error.message));
+
           return;
         }
+
         send({ method: 'initialized' });
         send({
           id: 2,
@@ -56,10 +63,15 @@ try {
           params: { cwds: [root], forceReload: true },
         });
       }
+
       if (message.id === 2) {
         clearTimeout(timer);
-        if (message.error) reject(new Error(message.error.message));
-        else resolve(message.result);
+
+        if (message.error) {
+          reject(new Error(message.error.message));
+        } else {
+          resolve(message.result);
+        }
       }
     });
     send({
@@ -71,6 +83,7 @@ try {
   const listing = result.data.find(
     (entry) => path.resolve(entry.cwd) === path.resolve(root),
   );
+
   assert(listing, 'Codex returned no skill listing for this workspace');
   const localPath = path.join(root, '.agents/skills').toLowerCase();
   const repoSkills = listing.skills.filter((skill) =>
@@ -79,6 +92,7 @@ try {
   const errors = listing.errors.filter((error) =>
     error.path.toLowerCase().startsWith(localPath),
   );
+
   assert.deepEqual(errors, [], 'Codex reported project skill parse errors');
   assert.deepEqual(
     repoSkills.map((skill) => skill.name).sort(),
@@ -89,13 +103,14 @@ try {
     'A project skill is disabled or has wrong scope',
   );
   const evidence = {
-    checkedOn: '2026-10-28',
+    checkedOn: new Date().toISOString().slice(0, 10),
     method: 'Codex app-server initialize + skills/list, forceReload=true; no model turn',
     skills: repoSkills
       .map(({ name, scope, enabled }) => ({ name, scope, enabled }))
       .sort((a, b) => a.name.localeCompare(b.name)),
     errors,
   };
+
   await writeFile(
     path.join(root, 'docs/codex-skills-discovery.json'),
     `${JSON.stringify(evidence, null, 2)}\n`,

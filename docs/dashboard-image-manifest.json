@@ -1,0 +1,170 @@
+[
+  {
+    "key": "desktop-dark-en",
+    "generator": "Built-in image_gen",
+    "prompt": "Use case: ui-mockup. Asset type: production landing-page product screenshot, desktop web dashboard, landscape 16:10 composition.\nCreate a refined, pixel-sharp personal cloud file storage WEB dashboard for Dropvia. Take only the general information architecture of Dropbox web (left navigation, global search, main files area), NOT Dropbox branding or its visual design. Our specific visual system: near-black midnight canvas #05060f, raised surfaces #0d101c and #141824, icy text #d8ecf8, secondary text #9da7ba, very fine cool-blue translucent separators, restrained inset frost edges, 16px panel corners, pill buttons, calm precise sans serif, generous but practical spacing. Only one violet #663af3 control: Upload. All other UI monochrome icy blue-grey.\nRender the dashboard itself perfectly front-on, edge-to-edge in the image. No exterior background or device, no perspective, no dramatic shadows, no hero text or marketing. Top left small solid teardrop symbol and word Dropvia. Slim sidebar with Files selected, Shared, Recent, Trash; bottom small Settings. Main area top compact search field and profile initials AL. Heading All files with Upload and New folder controls. A small row of three tasteful folder tiles Documents, Photos, Projects. Under it an orderly file table with Name, Modified, Size. Rows: Weekend photos (folder), Project brief.pdf, Coast.jpg (tiny calm blue coastline thumbnail), Notes.txt, Portfolio.pdf. Show modest ordinary dates and file sizes, no storage plan or usage counters, no invitation labels, no security badges, no graphs. Select no rows. Keep the dashboard visually rich through careful hierarchy, materials and thumbnail detail, never redundant cards. Use exact short English labels and crisp legible text. This is one complete desktop dashboard asset, not a collage. High fidelity finished product UI.\nRefinement: Refine this exact Dropvia dashboard screenshot. Keep its composition, dimensions, every English text label, table, typography, spacing and near-black palette unchanged. Change ONLY the icon treatment: the teardrop brand mark must be flat pale ice blue #d8ecf8, not purple; folder glyphs must be flat restrained blue-grey #9da7ba, not saturated cyan or 3D; PDF/file glyphs must be simple monochrome outlines with no red or Adobe logo. The Upload button is the only violet area. Everything else is strictly monochrome cool blue-grey, except the tiny existing natural coastline thumbnail. Keep all labels completely legible. Front-on screenshot, no extra frame.",
+    "sourceWidth": 1586,
+    "sourceHeight": 992,
+    "variants": [
+      {
+        "file": "desktop-dark-en-800.webp",
+        "width": 800,
+        "height": 500,
+        "bytes": 23728
+      },
+      {
+        "file": "desktop-dark-en-1600.webp",
+        "width": 1600,
+        "height": 1001,
+        "bytes": 59684
+      }
+    ]
+  },
+  {
+    "key": "desktop-light-en",
+    "generator": "Built-in image_gen",
+    "prompt": "Create the LIGHT THEME version of this exact Dropvia desktop web dashboard screenshot. Preserve the exact composition, dimensions, all English labels and file names, sidebar, search, three folder tiles, table and spacing. Change only theme colors/materials: canvas #f6f8fc, surfaces white #ffffff with very subtle cool-grey inset edges, text/teardrop #19263c, secondary text #56647a, lines rgba(36,61,98,.15). Folder/file icons restrained monochrome blue-grey, no bright colors, no third-party logos. Upload button stays violet #663af3 with white text. Keep the coastline thumbnail. Crisp finished UI, front-on edge-to-edge, no device/no exterior frame, no added slogans.",
+    "sourceWidth": 1586,
+    "sourceHeight": 992,
+    "variants": [
+      {
+        "file": "desktop-light-en-800.webp",
+        "width": 800,
+        "height": 500,
+        "bytes": 24550
+      },
+      {
+        "file": "desktop-light-en-1600.webp",
+        "width": 1600,
+        "height": 1001,
+        "bytes": 61260
+      }
+    ]
+  },
+  {
+    "key": "mobile-dark-en",
+    "generator": "Built-in image_gen",
+    "prompt": "Use case: ui-mockup. Generate a PORTRAIT 2:3 image of the MOBILE WEB responsive version of this exact Dropvia file-storage dashboard. This must look like a mobile BROWSER WEB APP, NOT a native mobile app. NO phone hardware, no iOS status bar, no home indicator, no native bottom tab bar, no device mockup. Front-on edge-to-edge responsive webpage. Same midnight #05060f/#0d101c, icy #d8ecf8 text, restrained #9da7ba file/folder icons, thin translucent separators, 16px panels, pill buttons. Small top header with hamburger, pale ice-blue teardrop + Dropvia and AL avatar. A full-width search field 'Search files…'. Heading 'All files'. One violet #663af3 Upload pill and neutral New folder button. Compact folder shortcuts Documents, Photos, Projects. Mobile list rows show a file/folder icon, title, small secondary date/size and ellipsis. File names: Weekend photos, Project brief.pdf, Coast.jpg with tiny blue coastline thumbnail, Notes.txt, Portfolio.pdf. One simple Files / Shared / Recent text navigation row, not bottom native navigation. Adapt the desktop hierarchy intentionally for a narrow web viewport with generous touch targets, excellent typography and no horizontal overflow. No usage quotas, invitation text, extra functionality slogans, claims or watermarks. One complete screenshot, not a collage.",
+    "sourceWidth": 1024,
+    "sourceHeight": 1536,
+    "variants": [
+      {
+        "file": "mobile-dark-en-480.webp",
+        "width": 480,
+        "height": 720,
+        "bytes": 28192
+      },
+      {
+        "file": "mobile-dark-en-960.webp",
+        "width": 960,
+        "height": 1440,
+        "bytes": 76550
+      }
+    ]
+  },
+  {
+    "key": "desktop-dark-ru",
+    "generator": "Built-in image_gen",
+    "prompt": "Translate this exact Dropvia dashboard screenshot into Russian. Keep all geometry, dimensions, colors, theme, imagery, files, rows, spacing, typography sizes and layout unchanged. Replace ONLY UI labels and descriptive names: Search files… → Поиск файлов…; Files → Файлы; All files → Все файлы; Shared → Общие; Recent → Недавние; Trash → Корзина; Settings → Настройки; Upload → Загрузить; New folder → Новая папка; Documents → Документы; Photos → Фото; Projects → Проекты; Name → Название; Modified → Изменён; Size → Размер; Weekend photos → Фото с выходных. Keep Dropvia, AL and literal filenames Project brief.pdf, Coast.jpg, Notes.txt, Portfolio.pdf unchanged. Short dates may be localized as 14 июн. 2024, 12 июн. 2024, 10 июн. 2024, 8 июн. 2024, 3 июн. 2024. Preserve every other detail. Perfectly readable Cyrillic, no extra labels, no collage.",
+    "sourceWidth": 1586,
+    "sourceHeight": 992,
+    "variants": [
+      {
+        "file": "desktop-dark-ru-800.webp",
+        "width": 800,
+        "height": 500,
+        "bytes": 27478
+      },
+      {
+        "file": "desktop-dark-ru-1600.webp",
+        "width": 1600,
+        "height": 1001,
+        "bytes": 69704
+      }
+    ]
+  },
+  {
+    "key": "desktop-light-ru",
+    "generator": "Built-in image_gen",
+    "prompt": "Translate this exact Dropvia dashboard screenshot into Russian. Keep all geometry, dimensions, colors, theme, imagery, files, rows, spacing, typography sizes and layout unchanged. Replace ONLY UI labels and descriptive names: Search files… → Поиск файлов…; Files → Файлы; All files → Все файлы; Shared → Общие; Recent → Недавние; Trash → Корзина; Settings → Настройки; Upload → Загрузить; New folder → Новая папка; Documents → Документы; Photos → Фото; Projects → Проекты; Name → Название; Modified → Изменён; Size → Размер; Weekend photos → Фото с выходных. Keep Dropvia, AL and literal filenames Project brief.pdf, Coast.jpg, Notes.txt, Portfolio.pdf unchanged. Short dates may be localized as 14 июн. 2024, 12 июн. 2024, 10 июн. 2024, 8 июн. 2024, 3 июн. 2024. Preserve every other detail. Perfectly readable Cyrillic, no extra labels, no collage.",
+    "sourceWidth": 1586,
+    "sourceHeight": 992,
+    "variants": [
+      {
+        "file": "desktop-light-ru-800.webp",
+        "width": 800,
+        "height": 500,
+        "bytes": 27352
+      },
+      {
+        "file": "desktop-light-ru-1600.webp",
+        "width": 1600,
+        "height": 1001,
+        "bytes": 67264
+      }
+    ]
+  },
+  {
+    "key": "mobile-light-en",
+    "generator": "Built-in image_gen",
+    "prompt": "Create the LIGHT THEME version of this exact mobile WEB Dropvia dashboard screenshot. Keep every layout detail, English label, file name, icon, image dimensions and portrait web viewport unchanged. Change only theme colors: canvas #f6f8fc, surfaces #ffffff, text and teardrop #19263c, secondary text #56647a, very subtle cool-grey separators. Folder/file icons restrained blue-grey. Upload pill remains violet #663af3 with white text. Preserve coastline thumbnail. No phone hardware, iOS/native status bars, home indicator or bottom native tab navigation. Exact responsive mobile website, not native app. One screenshot, no surrounding background.",
+    "sourceWidth": 1024,
+    "sourceHeight": 1536,
+    "variants": [
+      {
+        "file": "mobile-light-en-480.webp",
+        "width": 480,
+        "height": 720,
+        "bytes": 28866
+      },
+      {
+        "file": "mobile-light-en-960.webp",
+        "width": 960,
+        "height": 1440,
+        "bytes": 72722
+      }
+    ]
+  },
+  {
+    "key": "mobile-dark-ru",
+    "generator": "Built-in image_gen",
+    "prompt": "Translate this exact Dropvia dashboard screenshot into Russian. Keep all geometry, dimensions, colors, theme, imagery, files, rows, spacing, typography sizes and layout unchanged. Replace ONLY UI labels and descriptive names: Search files… → Поиск файлов…; Files → Файлы; All files → Все файлы; Shared → Общие; Recent → Недавние; Trash → Корзина; Settings → Настройки; Upload → Загрузить; New folder → Новая папка; Documents → Документы; Photos → Фото; Projects → Проекты; Name → Название; Modified → Изменён; Size → Размер; Weekend photos → Фото с выходных. Keep Dropvia, AL and literal filenames Project brief.pdf, Coast.jpg, Notes.txt, Portfolio.pdf unchanged. Short dates may be localized as 14 июн. 2024, 12 июн. 2024, 10 июн. 2024, 8 июн. 2024, 3 июн. 2024. Preserve every other detail. Perfectly readable Cyrillic, no extra labels, no collage.\nThis is a portrait MOBILE WEB screenshot: keep the portrait responsive webpage and do not add phone hardware, native system bars, or a bottom navigation bar. Keep 'Новая папка' inside its control without clipping. Keep three folder tiles and five file rows.",
+    "sourceWidth": 1024,
+    "sourceHeight": 1536,
+    "variants": [
+      {
+        "file": "mobile-dark-ru-480.webp",
+        "width": 480,
+        "height": 720,
+        "bytes": 30068
+      },
+      {
+        "file": "mobile-dark-ru-960.webp",
+        "width": 960,
+        "height": 1440,
+        "bytes": 79516
+      }
+    ]
+  },
+  {
+    "key": "mobile-light-ru",
+    "generator": "Built-in image_gen",
+    "prompt": "Translate this exact Dropvia dashboard screenshot into Russian. Keep all geometry, dimensions, colors, theme, imagery, files, rows, spacing, typography sizes and layout unchanged. Replace ONLY UI labels and descriptive names: Search files… → Поиск файлов…; Files → Файлы; All files → Все файлы; Shared → Общие; Recent → Недавние; Trash → Корзина; Settings → Настройки; Upload → Загрузить; New folder → Новая папка; Documents → Документы; Photos → Фото; Projects → Проекты; Name → Название; Modified → Изменён; Size → Размер; Weekend photos → Фото с выходных. Keep Dropvia, AL and literal filenames Project brief.pdf, Coast.jpg, Notes.txt, Portfolio.pdf unchanged. Short dates may be localized as 14 июн. 2024, 12 июн. 2024, 10 июн. 2024, 8 июн. 2024, 3 июн. 2024. Preserve every other detail. Perfectly readable Cyrillic, no extra labels, no collage.\nThis is a portrait MOBILE WEB screenshot: keep the portrait responsive webpage and do not add phone hardware, native system bars, or a bottom navigation bar. Keep 'Новая папка' inside its control without clipping. Keep three folder tiles and five file rows.",
+    "sourceWidth": 1024,
+    "sourceHeight": 1536,
+    "variants": [
+      {
+        "file": "mobile-light-ru-480.webp",
+        "width": 480,
+        "height": 720,
+        "bytes": 30960
+      },
+      {
+        "file": "mobile-light-ru-960.webp",
+        "width": 960,
+        "height": 1440,
+        "bytes": 79942
+      }
+    ]
+  }
+]
