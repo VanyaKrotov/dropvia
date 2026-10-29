@@ -5,7 +5,11 @@ import { pageMetadata } from '@shared/seo/metadata';
 import { submitAccessRequest } from '@features/request-access/api/submit.server';
 import { LandingPage } from '@pages/landing/landing-page';
 
-export function meta({ location }: Route.MetaArgs) {
+export function meta({ location, error }: Route.MetaArgs) {
+  if (error) {
+    return [];
+  }
+
   return pageMetadata('home', localeFromPath(location.pathname));
 }
 

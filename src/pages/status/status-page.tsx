@@ -57,7 +57,7 @@ export function StatusPage({
           disabled={query.isFetching}
         >
           <Icon name="refresh" />
-          {t(query.isFetching ? 'status.checking' : 'status.refresh')}
+          {t('status.refresh')}
         </button>
       </section>
       {query.isError ? (

@@ -10,6 +10,7 @@ import {
 } from 'react-router';
 import stylesheet from '@app/styles/site.css?url';
 import { localeFromPath } from '@shared/i18n/config';
+import { pageSeo } from '@shared/seo/metadata';
 
 export function links() {
   return [
@@ -80,6 +81,7 @@ export function ErrorBoundary({ error }: { error: unknown }) {
           home: 'На главную',
         };
   const title = missing ? copy.missingTitle : copy.errorTitle;
+  const seo = pageSeo(missing ? 'notFound' : 'error', locale);
 
   return (
     <main
@@ -87,8 +89,10 @@ export function ErrorBoundary({ error }: { error: unknown }) {
       tabIndex={-1}
       className="page-shell grid min-h-dvh content-center gap-6 py-16"
     >
-      <title>{`${title} — Dropvia`}</title>
-      <meta name="robots" content="noindex, nofollow" />
+      <title>{seo.title}</title>
+      {seo.tags.map((tag) => (
+        <meta key={'name' in tag ? tag.name : tag.property} {...tag} />
+      ))}
       <h1 className="text-heading font-medium text-ink">{title}</h1>
       <p className="max-w-copy text-body">
         {missing ? copy.missingBody : copy.errorBody}

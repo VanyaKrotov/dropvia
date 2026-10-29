@@ -2,7 +2,8 @@ import { data } from 'react-router';
 import type { Route } from './+types/file-server';
 import { fileServers } from '@entities/service-health/model';
 import { getStatusSnapshot } from '@entities/service-health/status.server';
-import { createTranslations, localeFromPath, type Locale } from '@shared/i18n/config';
+import type { Locale } from '@shared/i18n/config';
+import { pageSeo } from '@shared/seo/metadata';
 import { FileServerPage } from '@pages/file-server/file-server-page';
 import { SiteFooter } from '@widgets/site-shell/site-shell';
 import { Providers } from '@app/providers';
@@ -35,16 +36,14 @@ export function headers() {
   return technicalHeaders;
 }
 
-export function meta({ location, params }: Route.MetaArgs) {
-  const t = createTranslations(localeFromPath(location.pathname)).t;
+export function meta({ loaderData, error }: Route.MetaArgs) {
+  if (error || !loaderData) {
+    return [];
+  }
 
-  return [
-    {
-      title: `${t('fileServer.title')} · ${params.uuid}`,
-    },
-    { name: 'description', content: t('fileServer.description') },
-    { name: 'robots', content: 'noindex, nofollow' },
-  ];
+  const seo = pageSeo('fileServer', loaderData.locale, loaderData.server.code);
+
+  return [{ title: seo.title }, ...seo.tags];
 }
 
 export default function FileServerRoute({ loaderData }: Route.ComponentProps) {

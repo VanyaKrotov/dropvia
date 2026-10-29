@@ -218,6 +218,10 @@ test('leaving the status page cancels an in-flight refresh', async ({ page }) =>
   try {
     await page.getByRole('button', { name: 'Refresh', exact: true }).click();
     const request = await started;
+
+    await expect(page.locator('.status-summary button')).toBeDisabled();
+    await expect(page.locator('.status-summary button')).toHaveText('Refresh');
+
     const failed = page.waitForEvent(
       'requestfailed',
       (candidate) => candidate === request,

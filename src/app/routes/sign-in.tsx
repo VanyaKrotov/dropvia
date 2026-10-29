@@ -44,7 +44,11 @@ export async function action({ request, params }: Route.ActionArgs) {
   );
 }
 
-export function meta({ location }: Route.MetaArgs) {
+export function meta({ location, error }: Route.MetaArgs) {
+  if (error) {
+    return [];
+  }
+
   return pageMetadata('signIn', localeFromPath(location.pathname));
 }
 

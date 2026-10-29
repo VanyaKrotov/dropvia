@@ -11,11 +11,11 @@ test('HTTP response contains real content and metadata before any client JavaScr
 
   expect(html).toContain('Your files.');
   expect(html).toContain('Request access');
-  expect(html).toMatch(/<title>Dropvia[^<]+<\/title>/);
+  expect(html).toContain('<title>File storage and sharing | Dropvia</title>');
   expect(html).toMatch(/<link[^>]+rel="canonical"[^>]+href="https:\/\/dropvia.fun\/"/);
-  expect(html).toMatch(/<meta[^>]+name="description"[^>]+content="A simpler/);
+  expect(html).toMatch(/<meta[^>]+name="description"[^>]+content="Store and share/);
   expect(html).toMatch(/<meta[^>]+property="og:title"/);
-  expect(html).toMatch(/<meta[^>]+name="twitter:card"[^>]+content="summary"/);
+  expect(html).toMatch(/<meta[^>]+name="twitter:card"[^>]+content="summary_large_image"/);
   expect(html).toMatch(/<meta[^>]+name="robots"[^>]+content="noindex, nofollow"/);
 });
 
@@ -78,7 +78,7 @@ test('unknown URLs return 404 without a homepage canonical', async ({ request })
   const html = await response.text();
 
   expect(html).toContain('Page not found');
-  expect(html).toContain('<title>Page not found — Dropvia</title>');
+  expect(html).toContain('<title>Page not found | Dropvia</title>');
   expect(html).not.toContain('rel="canonical"');
   expect(html).not.toContain('node_modules');
 });
@@ -92,12 +92,12 @@ test('Russian errors retain the URL language and a populated title', async ({
   const html = await response.text();
 
   expect(html).toContain('lang="ru"');
-  expect(html).toContain('<title>Страница не найдена — Dropvia</title>');
+  expect(html).toContain('<title>Страница не найдена | Dropvia</title>');
   expect(html).toContain('href="/ru"');
   expect(html).not.toContain('Page not found');
 });
 
-test('robots allows reading noindex and does not advertise an empty sitemap', async ({
+test('robots advertises a sitemap of canonical public pages excluding status and file nodes', async ({
   request,
 }) => {
   const robots = await request.get('/robots.txt');
@@ -105,9 +105,32 @@ test('robots allows reading noindex and does not advertise an empty sitemap', as
   expect(robots.status()).toBe(200);
   expect(robots.headers()['content-type']).toContain('text/plain');
   expect(await robots.text()).toContain('Allow: /');
-  expect(await robots.text()).not.toContain('Sitemap:');
+  expect(await robots.text()).toContain('Sitemap: https://dropvia.fun/sitemap.xml');
   const sitemap = await request.get('/sitemap.xml');
 
-  expect(sitemap.status()).toBe(204);
-  expect(await sitemap.text()).toBe('');
+  expect(sitemap.status()).toBe(200);
+  expect(sitemap.headers()['content-type']).toContain('application/xml');
+  const xml = await sitemap.text();
+  const urls = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1]);
+
+  expect(urls).toHaveLength(12);
+  expect(new Set(urls).size).toBe(12);
+  expect(xml).not.toContain('/status');
+  expect(xml).not.toContain('/_data');
+  expect(xml).not.toContain('/api/v1');
+
+  for (const url of urls) {
+    if (!url) {
+      throw new Error('A sitemap entry must contain an absolute URL');
+    }
+
+    expect(new URL(url).origin).toBe('https://dropvia.fun');
+    const response = await request.get(new URL(url).pathname, { maxRedirects: 0 });
+
+    expect(response.status()).toBe(200);
+    const html = await response.text();
+
+    expect(html.match(/<link[^>]+rel="canonical"[^>]+href="([^"]+)"/)?.[1]).toBe(url);
+    expect(html).toContain('content="noindex, nofollow"');
+  }
 });

@@ -19,41 +19,57 @@ export const en = {
     back: 'Back to home',
   },
   meta: {
-    signIn: {
-      title: 'Sign in — Dropvia',
-      description:
-        'Sign in to Dropvia with your email address and password, or request access.',
-    },
     home: {
-      title: 'Dropvia — a place for your files',
+      title: 'File storage and sharing',
       description:
-        'A simpler place to store, share and download your files. Request access to Dropvia.',
+        'Store and share documents, photos and project files with Dropvia. Explore the web interface, compare plans and request access.',
     },
     prices: {
-      title: 'Plans — Dropvia',
+      title: 'Plans and pricing',
       description:
-        'Compare Dropvia Plus, Standard and Advanced: monthly prices in euros, storage, recovery and team features.',
+        'Compare Plus, Standard and Advanced: monthly prices in euros, storage space, deleted file recovery and team management options.',
     },
     status: {
-      title: 'Service status — Dropvia',
+      title: 'Service status',
       description:
-        'Current availability of the Dropvia API, authentication and download services.',
+        'View the latest Dropvia service snapshot for the API, authentication and file servers D01 and D02, including component status and response times.',
     },
     api: {
-      title: 'API reference — Dropvia',
+      title: 'API documentation',
       description:
-        'Explore the Dropvia REST API: upload, download, file metadata, sharing, status and access requests.',
+        'Dropvia API v1 reference: file uploads and downloads, metadata, sharing links, service status and access requests, with request and response examples.',
     },
-    terms: {
-      title: 'Terms of use — Dropvia',
+    signIn: {
+      title: 'Sign in',
       description:
-        'Rules for accessing Dropvia, using its website and API, and requesting an invitation.',
+        'Sign in to Dropvia with your email address and password. Registration is temporarily closed; you can submit an access request.',
     },
     privacy: {
-      title: 'Privacy — Dropvia',
+      title: 'Privacy policy',
       description:
-        'How information is handled when you visit Dropvia, request access or contact support.',
+        'Learn what information the Dropvia website processes when you request access, sign in or contact support, and how to raise a privacy request.',
     },
+    terms: {
+      title: 'Terms of use',
+      description:
+        'Read the terms for using the Dropvia website and API, requesting access, and contacting support about service use.',
+    },
+    fileServer: {
+      title: 'File server {{code}}',
+      description:
+        'Technical page for Dropvia file server {{code}}: API access information, public node details and the latest service status snapshot.',
+    },
+    notFound: {
+      title: 'Page not found',
+      description:
+        'The requested Dropvia page could not be found. Check the address or return to the home page to continue.',
+    },
+    error: {
+      title: 'Page unavailable',
+      description:
+        'This Dropvia page could not be loaded. Refresh the page or return to the home page to continue using the website.',
+    },
+    imageAlt: 'Dropvia droplet logo above the service name on a dark background.',
   },
   landing: {
     title: 'Your files.\nA little closer.',
@@ -280,7 +296,6 @@ export const en = {
     'download-01': 'File server D01',
     'download-02': 'File server D02',
     checked: 'Last checked',
-    checking: 'Checking services…',
     refresh: 'Refresh',
     error: 'Unable to refresh status. The last received result is shown. Try again.',
     response: 'Response time',

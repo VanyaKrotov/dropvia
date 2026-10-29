@@ -33,6 +33,11 @@ describe('route errors', () => {
       'Не удалось открыть страницу',
     );
     expect(container).not.toHaveTextContent('super-secret');
+    expect(document.title).toBe('Страница недоступна | Dropvia');
+    expect(document.head.querySelector('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      'https://dropvia.fun/images/og/dropvia.png',
+    );
     expect(screen.getByRole('link', { name: 'На главную' })).toHaveAttribute(
       'href',
       '/ru',

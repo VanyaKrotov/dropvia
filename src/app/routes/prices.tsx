@@ -3,7 +3,11 @@ import { localeFromPath } from '@shared/i18n/config';
 import { pageMetadata } from '@shared/seo/metadata';
 import { PricesPage } from '@pages/prices/prices-page';
 
-export function meta({ location }: Route.MetaArgs) {
+export function meta({ location, error }: Route.MetaArgs) {
+  if (error) {
+    return [];
+  }
+
   return pageMetadata('prices', localeFromPath(location.pathname));
 }
 

@@ -2,6 +2,12 @@
 
 Основа — неизменённый `DESIGN.md`: midnight canvas, холодный свет, Skywash, тонкие inset edges, воздушный ритм, панели16px, pill controls. AuthKit — источник визуальных принципов, не продуктовых функций. Явная новая задача расширяет систему светлой темой устройства.
 
+## Изображения для ссылок
+
+`public/images/og/dropvia.png` — единственная метакартинка для всех страниц, обеих локалей, файловых серверов и ошибок. По уточнению владельца29October2026 прежние18 обложек удалены. На midnight canvas `#05060f` по центру расположен знак-капля, под ним — название Dropvia в холодном `#d8ecf8`. Широкие безопасные поля, без названий разделов, дополнительных обещаний и декоративных эффектов. Обложка всегда тёмная независимо от темы устройства.
+
+Фактические размеры PNG хранятся в `shared/seo/social-images.json`; OG width/height берутся из этого файла. Исходный знак — `public/brand/dropvia-mark-on-dark-512.png`. Prompt, источник генерации, размеры и SHA-256 — `docs/social-image-manifest.json`. Общий `shared/seo/metadata.ts` подключает один URL для OG/Twitter и локализованный alt. PNG не загружается как контент страницы и не влияет на её LCP.
+
 ## Семантические токены
 
 Реализация `src/app/styles/site.css`: Tailwind4 `@theme` + CSS custom properties, без `@apply` и class-composition dependencies.

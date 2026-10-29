@@ -32,7 +32,7 @@
 
 `/` EN, `/ru` RU; страницы /prices, /api/, /status, /terms, /privacy и их локализованные пары сохранены. Header CTA Sign in / «Войти» ведёт на локализованную /sign-in по задаче владельца29October2026; language links сохраняют путь/query/hash. Hero, тарифы и подвал сохраняют ссылки на #request-access. На странице входа под email/password формой также есть ссылка на заявку; свободная регистрация не добавлена.
 
-SEO остаётся noindex до разрешённого запуска. Уникальные SSR metadata/canonical/hreflang на dropvia.fun сохранены; sitemap204 до появления индексируемых URL. Private file endpoints не включаются в sitemap. Никаких fake ratings, MAUs или достижений.
+SEO остаётся noindex до разрешённого запуска. Уникальные SSR metadata/canonical/hreflang на dropvia.fun сохранены; sitemap.xml содержит12 EN/RU canonical страниц по запросу владельца, включая вход, кроме статуса и скрытых узлов; noindex пока сохранён. Private file endpoints не включаются в sitemap. Никаких fake ratings, MAUs или достижений.
 
 Файловые серверные контракты по-прежнему заглушки403/404, заявка201 без хранения/писем, status — синтетический снимок по исходной задаче. Цены, квоты, восстановление и опции тарифов утверждены владельцем: `docs/PRICING.md`. Реальные backend интеграции, биллинг, оператор и прочие условия хранения остаются открытыми. См. `docs/API.md` и `PRODUCT.md`.
 

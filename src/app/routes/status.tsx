@@ -4,7 +4,11 @@ import { localeFromPath } from '@shared/i18n/config';
 import { pageMetadata } from '@shared/seo/metadata';
 import { StatusPage } from '@pages/status/status-page';
 
-export function meta({ location }: Route.MetaArgs) {
+export function meta({ location, error }: Route.MetaArgs) {
+  if (error) {
+    return [];
+  }
+
   return pageMetadata('status', localeFromPath(location.pathname));
 }
 

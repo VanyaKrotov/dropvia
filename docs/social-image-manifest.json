@@ -1,0 +1,21 @@
+{
+  "generator": "Built-in image_gen",
+  "referenceLogo": "public/brand/dropvia-mark-on-dark-512.png",
+  "scope": "One image for every page and locale; replaces the previous 18 covers.",
+  "assets": [
+    {
+      "page": "all",
+      "locale": "all",
+      "label": "Dropvia",
+      "path": "public/images/og/dropvia.png",
+      "prompt": "Use case: text-localization. Edit target: supplied existing Dropvia social cover. Replace only the text \"File storage\" with the exact service name \"Dropvia\" (capital D, lowercase r o p v i a). Preserve the pale icy-blue droplet logo above the text, its exact silhouette, size and position, the wide canvas and aspect ratio, the midnight #05060f background, centered vertical composition, generous whitespace, and clean modern sans-serif typography in #d8ecf8. Logo on top, Dropvia below, centered as one balanced group. This is the single universal social preview image for every page and language. No page names, no subtitles, no other text, no extra shapes or effects. Output opaque PNG.",
+      "sourceFile": "exec-419475bb-030f-4413-a49f-4c2cee4525cd.png",
+      "editSource": "Previously generated home cover, replaced and removed from the project.",
+      "width": 1730,
+      "height": 909,
+      "bytes": 1154900,
+      "sha256": "63eb53da4b71f8fcb4054b195c6930fb2d9eb4e7c4c36c3511b675cda30851a2",
+      "verified": "Visual logo/text/composition review and PNG decode"
+    }
+  ]
+}
