@@ -17,10 +17,11 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:release": "node --test scripts/release/validate-tag.test.mjs",
     "test:e2e": "playwright test",
     "test:ssr": "playwright test tests/e2e/ssr.spec.ts --project=desktop",
     "skills:verify": "node scripts/verify-skills.mjs",
-    "check": "npm run skills:verify && npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build && npm run test:e2e"
+    "check": "npm run skills:verify && npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:release && npm run build && npm run test:e2e"
   },
   "dependencies": {
     "@react-router/node": "8.5.1",

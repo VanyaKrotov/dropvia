@@ -20,6 +20,40 @@ npm start
 
 SSR server использует PORT/HOST среды; при отсутствии PORT стандартный порт3000.
 
+## Docker и GitHub Releases
+
+`Dockerfile` собирает production SSR в нескольких стадиях. Runtime содержит только build и production node_modules, работает от пользователя node и слушает0.0.0.0:3000. Node22.22.3 совпадает с текущей .nvmrc; Actions передаёт её точное значение как NODE_VERSION. `.dockerignore` разрешает только исходники, public и необходимые build configs; локальные зависимости, credentials/.env, skills, docs и test artifacts не передаются в контекст.
+
+```bash
+docker build -t dropvia:local .
+docker run --rm --name dropvia -p 3000:3000 dropvia:local
+```
+
+`.github/workflows/docker-release.yml` запускается при push тега формата vX.X.X, например v0.1.0. Обычный push в main и PR не собирают образ. До сборки проверяются точный stable SemVer (без prerelease/build suffix и ведущих нулей), совпадение тега с SHA события и принадлежность коммита истории origin/main. Тег на более раннем main-коммите разрешён; собирается именно этот SHA. Тег на неслитой feature-ветке блокируется. GitHub tag push не содержит branch context, поэтому branches+tags не используются как ложное условие AND.
+
+После попадания этих настроек в main релиз запускается так (версия приведена как пример):
+
+```bash
+git switch main
+git pull --ff-only
+git tag -a v0.1.0 -m "Dropvia v0.1.0"
+git push origin v0.1.0
+```
+
+Сначала проходит reusable Quality на Ubuntu/Windows. Затем Buildx собирает linux/amd64, экспортирует Docker archive, проверяет загрузку и запуск non-root SSR/статических ресурсов в read-only контейнере. В релиз прикладываются `dropvia-v0.1.0-linux-amd64.tar.gz` и одноимённый `.sha256`. GitHub Release создаётся, если его ещё нет; существующий получает assets. `GITHUB_TOKEN` с contents:write доступен только отдельному publish job; PAT и container registry не требуются. Actions artifact хранится7 дней как передача между jobs, release assets остаются в релизе.
+
+Перед публикацией повторно проверяется SHA удалённого тега и checksum. Существующие assets не перезаписываются: повтор с тем же именем завершится ошибкой вместо --clobber. При неудачной частичной загрузке требуется осознанно исправить состав assets или выпустить новую версию. Если включена release immutability, assets нужно добавлять до публикации релиза; workflow создаёт новый релиз вместе с assets через gh release create. Не передвигайте релизные теги.
+
+Загрузка архива с платформы linux/amd64 и запуск:
+
+```bash
+sha256sum --check dropvia-v0.1.0-linux-amd64.tar.gz.sha256
+docker load --input dropvia-v0.1.0-linux-amd64.tar.gz
+docker run --rm --name dropvia -p 3000:3000 dropvia:v0.1.0
+```
+
+Настройка workflow не является deployment. Для локальной сборки нужен работающий Docker Engine; фактические результаты проверки конфигурации — `docs/DOCKER_RELEASE.md`.
+
 ## Импорты
 
 Для src/ настроены aliases в tsconfig.json: `@app/`, `@pages/`, `@widgets/`, `@features/`, `@entities/`, `@shared/`. Vite и Vitest используют эту же карту без дополнительных зависимостей.
@@ -68,6 +102,7 @@ npm run lint
 npm run typecheck
 npm run format:check
 npm run test
+npm run test:release
 npm run build
 npx playwright install chromium
 npm run test:ssr

@@ -1,0 +1,15 @@
+**
+!package.json
+!package-lock.json
+!.npmrc
+!tsconfig.json
+!react-router.config.ts
+!vite.config.ts
+!src/
+!src/**
+!public/
+!public/**
+**/*.test.ts
+**/*.test.tsx
+**/.env
+**/.env.*

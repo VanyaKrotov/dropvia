@@ -73,6 +73,8 @@ Sign-in is a standalone localized SSR route outside the marketing layout, with a
 
 Unit tests cover validation, synthetic distribution, parser, language isolation and error sanitization. Playwright covers SSR/no-JS, form success/failure, API contracts, polling lifecycle, both languages/themes, layouts and axe. CI matrix Windows/Ubuntu retained. `npm run check` is the local complete gate.
 
+Docker release: multi-stage Dockerfile assembles the SSR build and production dependencies into a non-root Node runtime; .dockerignore uses an explicit build-context allowlist. A tag-only workflow validates strict vX.X.X and main ancestry, calls the reusable Quality matrix, builds the exact tagged SHA and exports a linux/amd64 Docker archive. A separate contents:write publisher attaches archive/checksum to GitHub Release after image load/SSR smoke checks. `npm run test:release` tests the Git gate on temporary repositories and participates in Quality/check. No registry or deployment is configured. Workflow contract, pinned sources and actual verification limitations: `docs/DOCKER_RELEASE.md`.
+
 Prerender can be enabled later for verified-static public routes using the installed framework API; never prerender private file URLs. Keep business behavior in feature/entity slices, not root layout. Add new dependencies only for an actual need. Do not add generic repositories, services, wrappers or global state before they carry behavior.
 
 ## Unlisted file server pages and public status memory

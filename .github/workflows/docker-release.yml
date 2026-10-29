@@ -1,0 +1,145 @@
+name: Docker release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate release tag and main ancestry
+    if: github.event.deleted == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      commit: ${{ steps.tag.outputs.commit }}
+      node_version: ${{ steps.tag.outputs.node_version }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate stable version and tagged commit
+        id: tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: node scripts/release/validate-tag.mjs
+
+  quality:
+    name: Release quality checks
+    needs: validate
+    uses: ./.github/workflows/quality.yml
+    permissions:
+      contents: read
+
+  build:
+    name: Build and verify Docker archive
+    needs: [validate, quality]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      RELEASE_TAG: ${{ needs.validate.outputs.tag }}
+      RELEASE_COMMIT: ${{ needs.validate.outputs.commit }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.validate.outputs.commit }}
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Build production image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          push: false
+          provenance: false
+          tags: dropvia:${{ needs.validate.outputs.tag }}
+          build-args: NODE_VERSION=${{ needs.validate.outputs.node_version }}
+          labels: |
+            org.opencontainers.image.title=Dropvia
+            org.opencontainers.image.version=${{ needs.validate.outputs.tag }}
+            org.opencontainers.image.revision=${{ needs.validate.outputs.commit }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Export and load release archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/release-assets"
+          cd "$RUNNER_TEMP/release-assets"
+          archive="dropvia-${RELEASE_TAG}-linux-amd64.tar.gz"
+          docker image save "dropvia:${RELEASE_TAG}" | gzip -n > "$archive"
+          gzip --test "$archive"
+          sha256sum "$archive" > "${archive}.sha256"
+          docker load --input "$archive"
+      - name: Verify non-root SSR runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'docker logs dropvia-release; docker rm -f dropvia-release' EXIT
+          docker run --detach --name dropvia-release \
+            --publish 127.0.0.1:3000:3000 --read-only \
+            --cap-drop ALL --security-opt no-new-privileges \
+            "dropvia:${RELEASE_TAG}"
+          docker exec dropvia-release node -e 'if (process.getuid() === 0) process.exit(1)'
+          curl --fail --silent --show-error --retry 20 --retry-connrefused \
+            --retry-delay 1 --max-time 5 http://127.0.0.1:3000/ > "$RUNNER_TEMP/home.html"
+          grep -Fq '<title>File storage and sharing | Dropvia</title>' "$RUNNER_TEMP/home.html"
+          curl --fail --silent --show-error http://127.0.0.1:3000/ru > "$RUNNER_TEMP/ru.html"
+          grep -Fq 'lang="ru"' "$RUNNER_TEMP/ru.html"
+          curl --fail --silent --show-error http://127.0.0.1:3000/images/og/dropvia.png > /dev/null
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: docker-release-${{ needs.validate.outputs.tag }}
+          path: ${{ runner.temp }}/release-assets/*
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Attach image to GitHub Release
+    needs: [validate, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ needs.validate.outputs.tag }}
+      RELEASE_COMMIT: ${{ needs.validate.outputs.commit }}
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: docker-release-${{ needs.validate.outputs.tag }}
+          path: ${{ runner.temp }}/release-assets
+      - name: Publish verified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_commit="$(gh api "repos/${GH_REPO}/commits/tags%2F${RELEASE_TAG}" --jq '.sha')"
+          if [[ "$remote_commit" != "$RELEASE_COMMIT" ]]; then
+            echo 'Release tag changed after validation; refusing publication.' >&2
+            exit 1
+          fi
+          cd "$RUNNER_TEMP/release-assets"
+          archive="dropvia-${RELEASE_TAG}-linux-amd64.tar.gz"
+          sha256sum --check "${archive}.sha256"
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$archive" "${archive}.sha256"
+          else
+            gh release create "$RELEASE_TAG" "$archive" "${archive}.sha256" \
+              --verify-tag --title "Dropvia ${RELEASE_TAG}" --generate-notes
+          fi

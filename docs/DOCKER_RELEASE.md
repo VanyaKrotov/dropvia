@@ -1,0 +1,47 @@
+# Docker release
+
+Цель владельца: образ для main и релизных тегов vX.X.X, архив в GitHub Release. Реализация — `.github/workflows/docker-release.yml`, `Dockerfile`, `.dockerignore`, `scripts/release/validate-tag.mjs`. Baseline до задачи: cb91cad. Настройка не создаёт удалённый тег/релиз и не выполняет deployment сама по себе; публикация выполняется будущим tag push.
+
+## Контракт запуска
+
+Только push тега vX.X.X, проверенного строгим stable SemVer. GitHub glob v*._._ — предварительный фильтр; malformed/prerelease tags отклоняются validate job до Quality и Docker. Удаление тега пропускается. Обычные branch pushes, PR и manual dispatch не запускают release workflow.
+
+Checkout получает SHA события и полную историю. Gate проверяет tag commit, HEAD и event commit, затем git merge-base --is-ancestor с origin/main. Lightweight и annotated tags поддержаны. Более ранний коммит истории main разрешён; неслитая feature-ветка запрещена. Политика не требует равенства текущему tip main. Повторная проверка удалённого tag SHA перед публикацией блокирует перемещённый тег.
+
+## Сборка и assets
+
+Node22.22.3-bookworm-slim, значение версии для CI берётся из .nvmrc. npm ci использует lockfile и project .npmrc с ignore-scripts. Отдельные stages для build dependencies, SSR build и production dependencies. Runtime: node user, прямой Node CMD, PORT3000/HOST0.0.0.0, только package.json/build/node_modules. Контекст — allowlist исходников, public и build configs. Runtime libraries не заменяются host node_modules, dev dependencies не попадают в runtime.
+
+Quality workflow переиспользуется через workflow_call. Прямой Quality push ограничен branches, чтобы на тег не было второго независимого прогона. Existing PR/manual проверки сохранены. Release gate тестируется на Ubuntu/Windows вместе с остальными проверками.
+
+Buildx load, single linux/amd64; registry push и provenance attestations отключены, поскольку доставляется Docker archive. После docker save + gzip -n создаётся SHA-256, архив проверяется и загружается docker load. Smoke запускает read-only non-root контейнер, проверяет SSR EN/RU и общий PNG. В release передаются только archive/checksum через Actions artifact (7 дней), publisher скачивает их и проверяет checksum. Published assets не перезаписываются.
+
+## Права и закреплённые actions
+
+Все GitHub actions закреплены полными commits. Проверены upstream refs: checkout v6 d23441a48e516b6c34aea4fa41551a30e30af803 (существующая настройка); setup-buildx v4 f87e5991a6d7451dcb8d9637bfbc97413f497069; build-push v7 c3c9e263c25d99ce0380d002d59b67737d91b0dc; upload-artifact v4 ea165f8d65b6e75b540449e92b4886f43607fa02 (существующая настройка); download-artifact v4 d3f86a106a0bac45b974a628896c90dbdf5c8093. Docker actions проверены по официальным action.yml. Новые install scripts, hooks, PAT или registry credentials не добавляются.
+
+Validate/Quality/build: contents:read, checkout без сохранённых credentials. Publish: contents:write, без checkout и исполнения npm/Docker/project scripts; GH_TOKEN передаётся только шагу gh release. GitHub CLI preinstalled на ubuntu runner. Новый релиз создаётся с --verify-tag и assets; существующий получает assets без --clobber. При совпадении имени операция безопасно останавливается, допускается только осознанное исправление assets или новая версия.
+
+## Проверка
+
+Gate tests используют временные Git repositories с собственными refs и локальной identity, не меняют пользовательские теги/ветки/remotes. Проверяются annotated/lightweight tags, старый main commit, off-main commit, moved tag, malformed versions/newline, отсутствие main и CLI outputs. Проверка удаления fixtures ограничена собственной временной директорией.
+
+Проверено локально на Windows29October2026:
+
+- `npm run skills:verify`, `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build` — exit0.
+- `npm run test` —52/52; `npm run test:release` —9/9; `npm run test:e2e -- --workers=4` —147/147, включая SSR.
+- actionlint v1.7.12, собранный из официального Go module в игнорируемый artifacts/tools: оба workflow приняты без ошибок. ShellCheck не запускался; три Bash run-блока отдельно прошли Git Bash -n, JavaScript — node --check.
+- Standards review —0 actionable findings. Spec review нашёл неоднозначность refs при совпадении branch/tag имени; исправлено через `commits/tags%2F${RELEASE_TAG}` и тест коллизии refs. Повторное review закрыло замечание.
+- `git diff --check` — без whitespace errors.
+
+Docker CLI29.6.2 установлен, но Linux Engine pipe недоступен; docker desktop start --detach не привёл к подключению. `docker build --check .` остановился до проверки Dockerfile на отсутствии Engine. Реальная сборка, docker save/load и запуск контейнера локально **не проверены**. Дополнительный read-only registry manifest lookup получил403, поэтому доступность base image из текущей сети также не подтверждена. Эти ограничения не обходились установкой WSL, изменением Docker/system settings или альтернативным непроверенным runtime. CI выполняет настоящую сборку/load/smoke перед publish; его успешный run ещё не подтверждён.
+
+Удалённый GitHub Actions run, push, создание тега/релиза и deployment в рамках настройки не выполнялись.
+
+## Первичные источники
+
+- GitHub push events: https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#push
+- Docker export/build: https://docs.docker.com/build/ci/github-actions/export-docker/
+- Docker best practices: https://docs.docker.com/build/building/best-practices/
+- Docker load compressed archives: https://docs.docker.com/reference/cli/docker/image/load/
+- GitHub Release assets: https://cli.github.com/manual/gh_release_create и https://cli.github.com/manual/gh_release_upload
