@@ -66,9 +66,9 @@ EXIT/INT/TERM запускают cleanup/rollback. При неудачном rol
 
 ## Проверки
 
-`npm run test:cli` — реальные Bash/Python исполнения с изолированными fake Docker/curl и fixture directories. Покрываются install/reinstall/checksum, shared/foreign images, update/no-update/stopped state/rollback, invalid bind, up/down, independent uninstall confirmations, CLI update и bootstrap. Это проверка control flow, а не подтверждение работы Docker Engine. На Windows тесты требуют Git Bash и CLI_TEST_PYTHON с путём к Python; без него отмечаются skipped, Ubuntu Quality запускает их обязательно с системным python3.
+`npm run test:cli` — реальные Bash/Python исполнения с изолированными fake Docker/curl и fixture directories. Покрываются install/reinstall/checksum, shared/foreign images, update/no-update/stopped state/rollback, invalid bind, up/down, independent uninstall confirmations, CLI update и bootstrap. Это проверка control flow, а не подтверждение работы Docker Engine. На Windows тесты требуют Git Bash и CLI_TEST_PYTHON с путём к Python; без него отмечаются skipped. На Linux используется системный python3.
 
-Quality Linux выполняет bash -n, ShellCheck и эти tests. Docker release workflow дополнительно запускает реальный CLI lifecycle smoke от root на одноразовом Ubuntu runner с уже собранным release archive: API/download подменены локальными файлами, Docker — настоящий. Новые Docker builds вне разрешённых tag/main условий не добавлены.
+По последней задаче владельца release workflow выполняет только сборку и публикацию; Quality и CLI lifecycle smoke оттуда удалены. Исходник scripts/cli-tests/docker-smoke.sh сохранён для отдельно разрешённого запуска на одноразовом Ubuntu Docker host. Локальные fixture tests и Bash/ShellCheck проверки сохраняются; ограничения самой CLI при установке/замене контейнера не менялись.
 
 Локальная проверка29October2026 (Windows, Git Bash + Python3; baseline0bc0a84):
 

@@ -34,16 +34,9 @@ jobs:
           RELEASE_SHA: ${{ github.sha }}
         run: node scripts/release/validate-tag.mjs
 
-  quality:
-    name: Release quality checks
-    needs: validate
-    uses: ./.github/workflows/quality.yml
-    permissions:
-      contents: read
-
   build:
-    name: Build and verify Docker archive
-    needs: [validate, quality]
+    name: Build Docker archive
+    needs: validate
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
@@ -72,7 +65,7 @@ jobs:
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Export and load release archive
+      - name: Export release archive
         shell: bash
         run: |
           set -euo pipefail
@@ -80,41 +73,7 @@ jobs:
           cd "$RUNNER_TEMP/release-assets"
           archive="dropvia-${RELEASE_TAG}-linux-amd64.tar.gz"
           docker image save "dropvia:${RELEASE_TAG}" | gzip -n > "$archive"
-          gzip --test "$archive"
           sha256sum "$archive" > "${archive}.sha256"
-          docker load --input "$archive"
-      - name: Verify non-root SSR runtime
-        shell: bash
-        run: |
-          set -euo pipefail
-          cleanup() {
-            result=$?
-            trap - EXIT
-            if [[ "$result" -ne 0 ]]; then
-              docker inspect --format '{{json .State}}' dropvia-release || true
-            fi
-            docker logs dropvia-release || true
-            docker rm -f dropvia-release || true
-            exit "$result"
-          }
-          trap cleanup EXIT
-          docker run --detach --name dropvia-release \
-            --publish 127.0.0.1:3000:3000 --read-only \
-            --cap-drop ALL --security-opt no-new-privileges \
-            "dropvia:${RELEASE_TAG}"
-          docker exec dropvia-release node -e 'if (process.getuid() === 0) process.exit(1)'
-          curl --fail --silent --show-error --retry 20 --retry-all-errors \
-            --retry-delay 1 --retry-max-time 60 --connect-timeout 2 --max-time 5 \
-            --output "$RUNNER_TEMP/home.html" http://127.0.0.1:3000/
-          grep -Fq '<title>File storage and sharing | Dropvia</title>' "$RUNNER_TEMP/home.html"
-          curl --fail --silent --show-error http://127.0.0.1:3000/ru > "$RUNNER_TEMP/ru.html"
-          grep -Fq 'lang="ru"' "$RUNNER_TEMP/ru.html"
-          curl --fail --silent --show-error http://127.0.0.1:3000/images/og/dropvia.png > /dev/null
-      - name: Verify Ubuntu CLI with the release image
-        shell: bash
-        run: |
-          sudo --preserve-env=RUNNER_TEMP bash scripts/cli-tests/docker-smoke.sh \
-            "$RUNNER_TEMP/release-assets/dropvia-${RELEASE_TAG}-linux-amd64.tar.gz" "$RELEASE_TAG"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: docker-release-${{ needs.validate.outputs.tag }}
@@ -139,7 +98,7 @@ jobs:
         with:
           name: docker-release-${{ needs.validate.outputs.tag }}
           path: ${{ runner.temp }}/release-assets
-      - name: Publish verified assets
+      - name: Publish release assets
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash

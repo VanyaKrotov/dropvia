@@ -43,7 +43,7 @@ curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/VanyaKro
 
 ## Проверка реализации
 
-`npm run test:cli` проверяет сценарии deploy и CLI с изолированными заменами APT, dpkg, systemctl, GPG, curl и Docker; тесты не меняют систему разработчика. Дополнительно используются bash -n, ShellCheck, shfmt и actionlint. Эти проверки не подтверждают реальную установку пакетов на Ubuntu. Docker lifecycle smoke настроен в release workflow; его будущий запуск требует main/tag условий сборки.
+`npm run test:cli` проверяет сценарии deploy и CLI с изолированными заменами APT, dpkg, systemctl, GPG, curl и Docker; тесты не меняют систему разработчика. Дополнительно используются bash -n, ShellCheck, shfmt и actionlint. Эти проверки не подтверждают реальную установку пакетов на Ubuntu. По последней задаче владельца release workflow выполняет только сборку и публикацию, без Quality/SSR/CLI smoke. Отдельный Docker lifecycle smoke source сохранён для явно разрешённой проверки на одноразовом host.
 
 Официальные источники установки: [Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/) и [Linux post-installation](https://docs.docker.com/engine/install/linux-postinstall/). На локальной Windows-машине настоящий deploy на Ubuntu не выполнялся; официальный Docker CDN при проверке ключа вернул HTTP 403. Скрипт оставляет такую ошибку явной и не подменяет источник.
 
