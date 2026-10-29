@@ -1,10 +1,10 @@
 export const en = {
   cookieNotice: {
     label: 'Cookies',
-    message: 'We use a cookie to remember your choice.',
+    message: 'We use browser storage to remember your choice.',
     details: 'Learn more',
     accept: 'OK',
-    error: 'Could not save your choice. Please try again.',
+    error: 'Could not save your choice. Allow browser storage and try again.',
   },
   common: {
     signIn: 'Sign in',
@@ -500,7 +500,7 @@ export const en = {
         },
         {
           title: 'Cookies and local preferences',
-          body: 'After you select OK in the cookie notice, we store the first-party dropvia_cookie_notice cookie for one year so the notice stays closed. It contains the same acknowledgement value for all visitors, not a personal identifier. You can delete it in your browser settings to show the notice again. We do not set advertising or analytics cookies. Your language follows the page address and the interface follows your device’s light or dark appearance setting.',
+          body: 'After you select OK, we save an acknowledgement in your browser’s localStorage so the notice stays closed on this site. It has no automatic expiry and contains no personal identifier. No acknowledgement request is sent to the server. Clearing this site’s browser data shows the notice again. We do not set advertising or analytics cookies. Your language follows the page address and the interface follows your device’s light or dark appearance setting.',
         },
         {
           title: 'Your choices',

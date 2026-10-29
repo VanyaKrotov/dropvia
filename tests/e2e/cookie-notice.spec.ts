@@ -1,99 +1,107 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('acknowledgement animates out and persists across reloads, locales and standalone pages', async ({
+test('acknowledgement animates out and persists across reloads, locales and standalone pages without requests', async ({
   page,
   context,
 }) => {
   const errors: string[] = [];
+  const posts: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
+  page.on('request', (request) => {
+    if (request.method() === 'POST') {
+      posts.push(request.url());
+    }
+  });
   await page.goto('/ru');
   const notice = page.getByRole('complementary', { name: 'Cookie', exact: true });
   await expect(notice).toBeVisible();
   await expect(notice).toHaveCSS('animation-name', 'cookie-notice-in');
-  expect(
-    (await context.cookies()).find((cookie) => cookie.name === 'dropvia_cookie_notice'),
-  ).toBeUndefined();
   await expect(notice.getByRole('link')).toHaveAttribute('href', '/ru/privacy');
   await notice.getByRole('button', { name: 'Хорошо', exact: true }).click();
   await expect(notice).toHaveCount(0);
-  const cookie = (await context.cookies()).find(
-    (item) => item.name === 'dropvia_cookie_notice',
-  );
-  expect(cookie?.httpOnly).toBe(true);
-  expect(cookie?.sameSite).toBe('Lax');
+  expect(
+    await page.evaluate(() => localStorage.getItem('dropvia:cookie-notice:v1')),
+  ).toBe('acknowledged');
   await page.getByRole('link', { name: 'English', exact: true }).click();
   await expect(page.locator('.cookie-notice')).toHaveCount(0);
   await page.getByRole('link', { name: 'Sign in', exact: true }).click();
   await expect(page.locator('.cookie-notice')).toHaveCount(0);
   await page.reload();
-  await expect(notice).toHaveCount(0);
   for (const path of ['/prices', '/ru/sign-in', '/_data/D01']) {
     await page.goto(path);
     await expect(page.locator('.cookie-notice')).toHaveCount(0);
   }
+  expect(await context.cookies()).toEqual([]);
+  expect(posts).toEqual([]);
   expect(errors).toEqual([]);
 });
 
-test('a failed acknowledgement keeps the notice visible and allows retry', async ({
+test('acknowledgement and clearing storage update another open tab', async ({
   page,
+  context,
 }) => {
   await page.goto('/');
-  await page.route('**/cookie-notice*', (route) =>
-    route.continue({ postData: 'acknowledge=no&returnTo=%2F' }),
-  );
-  const notice = page.getByRole('complementary', { name: 'Cookies', exact: true });
-  const button = notice.getByRole('button', { name: 'OK', exact: true });
-  await button.click();
-  await expect(notice.getByRole('status')).toContainText('Could not save your choice');
-  await expect(button).toBeEnabled();
-  await page.unroute('**/cookie-notice*');
-  await button.click();
-  await expect(notice).toHaveCount(0);
-});
-
-test('acknowledgement finishing after a client navigation closes the new page notice', async ({
-  page,
-}) => {
-  await page.goto('/');
-  await page.route('**/cookie-notice', async (route) => {
-    await page.waitForURL('**/sign-in');
-    await route.continue();
-  });
-  const request = page.waitForRequest('**/cookie-notice');
+  const otherPage = await context.newPage();
+  await otherPage.goto('/ru/sign-in');
+  await expect(otherPage.locator('.cookie-notice')).toBeVisible();
   await page.getByRole('button', { name: 'OK', exact: true }).click();
-  await request;
-  await page.getByRole('link', { name: 'Sign in', exact: true }).click();
-  await expect(page).toHaveURL('/sign-in');
-  await expect(page.locator('.cookie-notice')).toHaveCount(0);
+  await expect(otherPage.locator('.cookie-notice')).toHaveCount(0);
+  await page.evaluate(() => localStorage.clear());
+  await expect(otherPage.locator('.cookie-notice')).toBeVisible();
+  await page.reload();
+  await expect(page.locator('.cookie-notice')).toBeVisible();
 });
 
-for (const failure of ['network', 'proxy'] as const) {
-  test(`${failure} failures stay inside the notice and allow retry`, async ({ page }) => {
+for (const operation of ['getItem', 'setItem'] as const) {
+  test(`blocked storage ${operation} keeps the page usable without requests`, async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    const posts: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    page.on('request', (request) => {
+      if (request.method() === 'POST') {
+        posts.push(request.url());
+      }
+    });
+    await page.addInitScript((method) => {
+      Object.defineProperty(Storage.prototype, method, {
+        configurable: true,
+        value() {
+          throw new DOMException('Browser storage is blocked', 'SecurityError');
+        },
+      });
+    }, operation);
     await page.goto('/');
-    await page.route('**/cookie-notice*', (route) =>
-      failure === 'network'
-        ? route.abort('failed')
-        : route.fulfill({
-            status: 502,
-            contentType: 'text/html',
-            body: '<html>Bad gateway</html>',
-          }),
-    );
     const notice = page.getByRole('complementary', { name: 'Cookies', exact: true });
-    await notice.getByRole('button', { name: 'OK', exact: true }).click();
-    await expect(notice.getByRole('status')).toContainText('Could not save your choice');
+    await expect(notice).toBeVisible();
+    if (operation === 'setItem') {
+      await notice.getByRole('button', { name: 'OK', exact: true }).click();
+      await expect(notice.getByRole('status')).toContainText('browser storage');
+      await expect(notice.getByRole('button')).toBeEnabled();
+    }
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Your files.');
-    await page.unroute('**/cookie-notice*');
-    await notice.getByRole('button', { name: 'OK', exact: true }).click();
-    await expect(notice).toHaveCount(0);
+    expect(posts).toEqual([]);
+    expect(errors).toEqual([]);
   });
 }
 
-test('the notice and its confirmation work without JavaScript', async ({
+test('an unrecognized stored value does not dismiss the notice', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('dropvia:cookie-notice:v1', 'no'));
+  await page.goto('/');
+  await expect(page.locator('.cookie-notice')).toBeVisible();
+});
+
+test('server HTML and pages without JavaScript do not render a browser-only notice', async ({
   browser,
   baseURL,
+  request,
 }) => {
+  const response = await request.get('/');
+  expect(response.status()).toBe(200);
+  expect(response.headers()['set-cookie']).toBeUndefined();
+  expect(await response.text()).not.toContain('cookie-notice panel');
   if (!baseURL) {
     throw new Error('Playwright baseURL must be configured.');
   }
@@ -101,13 +109,8 @@ test('the notice and its confirmation work without JavaScript', async ({
   try {
     const page = await context.newPage();
     await page.goto('/ru/prices');
-    const notice = page.getByRole('complementary', { name: 'Cookie', exact: true });
-    await expect(notice).toBeVisible();
-    await notice.getByRole('button', { name: 'Хорошо', exact: true }).click();
-    await expect(page).toHaveURL('/ru/prices');
-    await expect(notice).toHaveCount(0);
-    await page.reload();
-    await expect(notice).toHaveCount(0);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.locator('.cookie-notice')).toHaveCount(0);
   } finally {
     await context.close();
   }
@@ -140,27 +143,4 @@ test('the notice follows both themes, fits the viewport and respects reduced mot
   await page.getByRole('button', { name: 'Хорошо', exact: true }).focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('.cookie-notice')).toHaveCount(0);
-});
-
-test('server HTML excludes an acknowledged notice before hydration', async ({
-  request,
-}) => {
-  const first = await request.get('/');
-  expect(first.headers()['cache-control']).toContain('no-store');
-  expect(first.headers()['vary']?.toLowerCase()).toContain('cookie');
-  expect(await first.text()).toContain('cookie-notice panel');
-  const russian = await request.get('/ru');
-  expect(russian.headers()['cache-control']).toContain('no-store');
-  expect(russian.headers()['vary']?.toLowerCase()).toContain('cookie');
-  const response = await request.post('/cookie-notice', {
-    form: { acknowledge: 'yes', returnTo: '/' },
-  });
-  expect(response.status()).toBe(200);
-  const second = await request.get('/');
-  expect(second.headers()['cache-control']).toContain('no-store');
-  expect(second.headers()['vary']?.toLowerCase()).toContain('cookie');
-  expect(await second.text()).not.toContain('cookie-notice panel');
-  const method = await request.get('/cookie-notice');
-  expect(method.status()).toBe(405);
-  expect(method.headers()['allow']).toBe('POST');
 });

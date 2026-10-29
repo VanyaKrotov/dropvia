@@ -1,59 +1,52 @@
-import type { FormEvent } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useState, useSyncExternalStore } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useRevalidator } from 'react-router';
+import { Link } from 'react-router';
 import { localizedPath, type Locale } from '@shared/i18n/config';
 
-export function CookieNotice({
-  acknowledged,
-  locale,
-}: {
-  acknowledged: boolean;
-  locale: Locale;
-}) {
-  const { t } = useTranslation();
-  const location = useLocation();
-  const revalidator = useRevalidator();
-  const mutation = useMutation({
-    retry: false,
-    // Mutation options also run if a navigation unmounts this particular notice.
-    onSuccess: () => revalidator.revalidate(),
-    mutationFn: async (body: URLSearchParams) => {
-      const response = await fetch('/cookie-notice', {
-        method: 'POST',
-        body,
-        signal: AbortSignal.timeout(15_000),
-      });
-      const result: unknown = await response.json();
-      if (
-        !response.ok ||
-        typeof result !== 'object' ||
-        result === null ||
-        !('acknowledged' in result) ||
-        result.acknowledged !== true
-      ) {
-        throw new Error('Cookie acknowledgement failed');
-      }
-    },
-  });
-  const visible = !acknowledged && !mutation.isSuccess;
+const storageKey = 'dropvia:cookie-notice:v1';
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!mutation.isPending) {
-      mutation.mutate(
-        new URLSearchParams({
-          acknowledge: 'yes',
-          returnTo: location.pathname + location.search,
-        }),
-      );
+function subscribe(onChange: () => void) {
+  window.addEventListener('storage', onChange);
+  window.addEventListener(storageKey, onChange);
+  return () => {
+    window.removeEventListener('storage', onChange);
+    window.removeEventListener(storageKey, onChange);
+  };
+}
+
+function isAcknowledged() {
+  try {
+    return localStorage.getItem(storageKey) === 'acknowledged';
+  } catch {
+    return false;
+  }
+}
+
+// Hide until hydration: the server cannot read this browser's localStorage.
+function serverSnapshot() {
+  return true;
+}
+
+export function CookieNotice({ locale }: { locale: Locale }) {
+  const { t } = useTranslation();
+  const acknowledged = useSyncExternalStore(subscribe, isAcknowledged, serverSnapshot);
+  const [storageError, setStorageError] = useState(false);
+
+  function acknowledge() {
+    try {
+      localStorage.setItem(storageKey, 'acknowledged');
+      setStorageError(false);
+      // Native storage events notify other tabs; notify this document as well.
+      window.dispatchEvent(new Event(storageKey));
+    } catch {
+      setStorageError(true);
     }
   }
 
   return (
     <AnimatePresence>
-      {visible && (
+      {!acknowledged && (
         <motion.aside
           key="cookie-notice"
           className="cookie-notice panel"
@@ -70,23 +63,15 @@ export function CookieNotice({
                 {t('cookieNotice.details')}
               </Link>
             </p>
-            {mutation.isError && (
+            {storageError && (
               <p className="cookie-notice-error" role="status">
                 {t('cookieNotice.error')}
               </p>
             )}
           </div>
-          <form method="post" action="/cookie-notice" onSubmit={submit}>
-            <input type="hidden" name="acknowledge" value="yes" />
-            <input
-              type="hidden"
-              name="returnTo"
-              value={location.pathname + location.search}
-            />
-            <button type="submit" className="button" disabled={mutation.isPending}>
-              {t('cookieNotice.accept')}
-            </button>
-          </form>
+          <button type="button" className="button" onClick={acknowledge}>
+            {t('cookieNotice.accept')}
+          </button>
         </motion.aside>
       )}
     </AnimatePresence>

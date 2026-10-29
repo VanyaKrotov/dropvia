@@ -2,13 +2,10 @@ import { useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
 import { MotionConfig } from 'framer-motion';
-import { useRouteLoaderData } from 'react-router';
-import type { loader as rootLoader } from '@app/root';
 import { CookieNotice } from '@features/cookie-notice/ui/cookie-notice';
 import { createTranslations, type Locale } from '@shared/i18n/config';
 
 export function Providers({ locale, children }: { locale: Locale; children: ReactNode }) {
-  const rootData = useRouteLoaderData<typeof rootLoader>('root');
   const [i18n] = useState(() => createTranslations(locale));
   const [queryClient] = useState(
     () =>
@@ -25,10 +22,7 @@ export function Providers({ locale, children }: { locale: Locale; children: Reac
       <QueryClientProvider client={queryClient}>
         <MotionConfig reducedMotion="user">
           {children}
-          <CookieNotice
-            acknowledged={rootData?.cookieNoticeAcknowledged ?? false}
-            locale={locale}
-          />
+          <CookieNotice locale={locale} />
         </MotionConfig>
       </QueryClientProvider>
     </I18nextProvider>

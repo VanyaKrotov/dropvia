@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import {
-  data,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -9,26 +8,9 @@ import {
   ScrollRestoration,
   useLocation,
 } from 'react-router';
-import type { Route } from './+types/root';
-import { isCookieNoticeAcknowledged } from '@features/cookie-notice/api/notice.server';
 import stylesheet from '@app/styles/site.css?url';
 import { localeFromPath } from '@shared/i18n/config';
 import { pageSeo } from '@shared/seo/metadata';
-
-const privateHeaders = { 'Cache-Control': 'private, no-store', Vary: 'Cookie' };
-
-export async function loader({ request }: Route.LoaderArgs) {
-  return data(
-    { cookieNoticeAcknowledged: await isCookieNoticeAcknowledged(request) },
-    {
-      headers: privateHeaders,
-    },
-  );
-}
-
-export function headers() {
-  return privateHeaders;
-}
 
 export function links() {
   return [

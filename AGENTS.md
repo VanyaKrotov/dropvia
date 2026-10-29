@@ -73,6 +73,8 @@ SOLID применять по необходимости; DRY без прежд�
 
 ## React Router SSR
 
+Cookie notice по запросу владельца30October2026 сохраняет только фиксированную отметку `dropvia:cookie-notice:v1` в localStorage при OK/«Хорошо», без серверных запросов и новой cookie. Без автоматического срока удаления; очистка site storage показывает панель снова. `useSyncExternalStore` синхронизирует вкладки; server snapshot скрывает панель до hydration, не читает localStorage на сервере и исключает мигание при сохранённом выборе. При запрете записи — inline error; не возвращать `/cookie-notice`, root loader или revalidation ради этого действия.
+
 - Перед генерацией проверь `package.json`/lock и docs `node_modules/react-router/docs/`; если их нет — version-matched официальные docs.
 - `ssr: true`, plugin `@react-router/dev/vite`, route modules, generated `./+types/*`. Не заменять Framework Mode на `BrowserRouter`/SPA.
 - Серверные данные — `loader`; изменения формы — `action` и `Form`/fetcher. Используй `useLoaderData<typeof loader>()` или типизированные `Route.ComponentProps`. Не добавляй loader для константы ради формальности.

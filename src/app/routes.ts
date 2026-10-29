@@ -1,7 +1,6 @@
 import { index, route, type RouteConfig } from '@react-router/dev/routes';
 
 export default [
-  route('cookie-notice', 'routes/cookie-notice.ts'),
   route('api/v1/upload/:uuid?', 'routes/api-upload.ts'),
   route('api/v1/download/:uuid?', 'routes/api-download.ts'),
   route('api/v1/files/:uuid', 'routes/api-files.ts'),
