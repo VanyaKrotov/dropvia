@@ -14,7 +14,7 @@ concurrency:
 jobs:
   validate:
     name: Validate release tag and main ancestry
-    if: github.event.deleted == false
+    if: github.event_name == 'push' && github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v') && github.event.deleted == false
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:

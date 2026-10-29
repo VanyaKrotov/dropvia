@@ -6,7 +6,7 @@
 
 ## Контракт запуска
 
-Только push тега vX.X.X, проверенного строгим stable SemVer. GitHub glob v*._._ — предварительный фильтр; malformed/prerelease tags отклоняются validate job до Quality и Docker. Удаление тега пропускается. Обычные branch pushes, PR и manual dispatch не запускают release workflow.
+Единая точка входа всей сборки — push тега vX.X.X, проверенного строгим stable SemVer. GitHub glob `v*.*.*` — предварительный фильтр; malformed/prerelease tags отклоняются validate job до Quality и Docker. Удаление тега пропускается. Обычные branch pushes (включая main без нового тега), PR и manual dispatch не запускают сборку. Для off-main тега выполняется только отклоняющая проверка validate; сборочные jobs не запускаются.
 
 Checkout получает SHA события и полную историю. Gate проверяет tag commit, HEAD и event commit, затем git merge-base --is-ancestor с origin/main. Lightweight и annotated tags поддержаны. Более ранний коммит истории main разрешён; неслитая feature-ветка запрещена. Политика не требует равенства текущему tip main. Повторная проверка удалённого tag SHA перед публикацией блокирует перемещённый тег.
 
@@ -14,7 +14,7 @@ Checkout получает SHA события и полную историю. Gat
 
 Node22.22.3-bookworm-slim, значение версии для CI берётся из .nvmrc. npm ci использует lockfile и project .npmrc с ignore-scripts. Отдельные stages для build dependencies, SSR build и production dependencies. Runtime: node user, прямой Node CMD, PORT3000/HOST0.0.0.0, только package.json/build/node_modules. Контекст — allowlist исходников, public и build configs. Runtime libraries не заменяются host node_modules, dev dependencies не попадают в runtime.
 
-Quality workflow переиспользуется через workflow_call. Прямой Quality push ограничен branches, чтобы на тег не было второго независимого прогона. Existing PR/manual проверки сохранены. Release gate тестируется на Ubuntu/Windows вместе с остальными проверками.
+Quality workflow доступен только через workflow_call; его единственный caller — release workflow после успешного validate. Самостоятельные push/PR/manual triggers удалены по уточнению владельца: TypeScript/SSR production build и Playwright, как и Docker image build, запускаются только в проверенной release-цепочке. Нельзя добавлять `branches: [main]` рядом с tags в push и считать это условием AND: ветка тега проверяется через Git ancestry. Release gate тестируется на Ubuntu/Windows вместе с остальными проверками. Локальные команды npm run check/build по-прежнему доступны вручную.
 
 Buildx load, single linux/amd64; registry push и provenance attestations отключены, поскольку доставляется Docker archive. После docker save + gzip -n создаётся SHA-256, архив проверяется и загружается docker load. Smoke запускает read-only non-root контейнер, проверяет SSR EN/RU и общий PNG. В release передаются только archive/checksum через Actions artifact (7 дней), publisher скачивает их и проверяет checksum. Published assets не перезаписываются.
 
