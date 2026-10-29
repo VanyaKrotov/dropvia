@@ -38,6 +38,12 @@ jobs:
       - run: npm run typecheck
       - run: npm run test
       - run: npm run test:release
+      - name: Ubuntu CLI checks
+        if: runner.os == 'Linux'
+        run: |
+          for script in scripts/dropvia.sh scripts/install-cli.sh scripts/deploy.sh scripts/cli-tests/docker-smoke.sh; do bash -n "$script"; done
+          shellcheck scripts/dropvia.sh scripts/install-cli.sh scripts/deploy.sh scripts/cli-tests/docker-smoke.sh
+          npm run test:cli
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

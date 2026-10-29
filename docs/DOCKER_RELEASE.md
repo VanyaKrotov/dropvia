@@ -1,5 +1,7 @@
 # Docker release
 
+Для подготовки сервера и установки готового релиза предусмотрен отдельный [deploy.sh](DEPLOY.md). Он не меняет условия сборки или публикации образов.
+
 Цель владельца: образ для main и релизных тегов vX.X.X, архив в GitHub Release. Реализация — `.github/workflows/docker-release.yml`, `Dockerfile`, `.dockerignore`, `scripts/release/validate-tag.mjs`. Baseline до задачи: cb91cad. Настройка не создаёт удалённый тег/релиз и не выполняет deployment сама по себе; публикация выполняется будущим tag push.
 
 ## Контракт запуска
@@ -18,7 +20,7 @@ Buildx load, single linux/amd64; registry push и provenance attestations отк
 
 ## Права и закреплённые actions
 
-Все GitHub actions закреплены полными commits. Проверены upstream refs: checkout v6 d23441a48e516b6c34aea4fa41551a30e30af803 (существующая настройка); setup-buildx v4 f87e5991a6d7451dcb8d9637bfbc97413f497069; build-push v7 c3c9e263c25d99ce0380d002d59b67737d91b0dc; upload-artifact v4 ea165f8d65b6e75b540449e92b4886f43607fa02 (существующая настройка); download-artifact v4 d3f86a106a0bac45b974a628896c90dbdf5c8093. Docker actions проверены по официальным action.yml. Новые install scripts, hooks, PAT или registry credentials не добавляются.
+Все GitHub actions закреплены полными commits. Проверены upstream refs: checkout v6 d23441a48e516b6c34aea4fa41551a30e30af803 (существующая настройка); setup-buildx v4 f87e5991a6d7451dcb8d9637bfbc97413f497069; build-push v7 c3c9e263c25d99ce0380d002d59b67737d91b0dc; upload-artifact v4 ea165f8d65b6e75b540449e92b4886f43607fa02 (существующая настройка); download-artifact v4 d3f86a106a0bac45b974a628896c90dbdf5c8093. Docker actions проверены по официальным action.yml. Сторонние remote install scripts, hooks, PAT или registry credentials не добавляются.
 
 Validate/Quality/build: contents:read, checkout без сохранённых credentials. Publish: contents:write, без checkout и исполнения npm/Docker/project scripts; GH_TOKEN передаётся только шагу gh release. GitHub CLI preinstalled на ubuntu runner. Новый релиз создаётся с --verify-tag и assets; существующий получает assets без --clobber. При совпадении имени операция безопасно останавливается, допускается только осознанное исправление assets или новая версия.
 
@@ -45,3 +47,7 @@ Docker CLI29.6.2 установлен, но Linux Engine pipe недоступе
 - Docker best practices: https://docs.docker.com/build/building/best-practices/
 - Docker load compressed archives: https://docs.docker.com/reference/cli/docker/image/load/
 - GitHub Release assets: https://cli.github.com/manual/gh_release_create и https://cli.github.com/manual/gh_release_upload
+
+## Дополнение: Ubuntu CLI
+
+В следующей задаче добавлены собственные scripts/dropvia.sh и scripts/install-cli.sh. Linux Quality проверяет их Bash syntax/ShellCheck и24 fixture scenarios; после обычного Docker smoke release job также запускает scripts/cli-tests/docker-smoke.sh с настоящим Engine и локальными download fixtures. Lifecycle: install, down/up idempotence, no-op update, destructive reinstall с проверкой profile/backup и uninstall. Это не добавляет Docker builds на branch/PR: smoke использует уже собранный image только в разрешённом tag/main workflow. Этот реальный CLI smoke ещё не выполнялся; локальные результаты и bootstrap команды — docs/UBUNTU_CLI.md.

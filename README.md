@@ -54,6 +54,26 @@ docker run --rm --name dropvia -p 3000:3000 dropvia:v0.1.0
 
 Настройка workflow не является deployment. Для локальной сборки нужен работающий Docker Engine; фактические результаты проверки конфигурации — `docs/DOCKER_RELEASE.md`.
 
+## Автоматическая установка на Ubuntu
+
+После публикации скриптов в main выполните команду на сервере от root (при необходимости сначала `sudo -i`). Она запустит deploy: он установит недостающие компоненты и Docker, затем CLI и контейнер; IP и порт запрашиваются в процессе:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/VanyaKrotov/dropvia/main/scripts/deploy.sh)
+```
+
+Нужны Ubuntu amd64 с systemd, curl и готовый latest Release с образом. Работающий Docker сохраняется, конфликтующие пакеты автоматически не удаляются. Подробности и запуск из сохранённого файла — [docs/DEPLOY.md](docs/DEPLOY.md).
+
+## CLI на Ubuntu
+
+После публикации скриптов в main установите CLI и сразу запустите контейнер одной командой на Ubuntu amd64 (Docker Engine должен быть установлен и запущен):
+
+```bash
+( set -eu; dropvia_tmp="$(mktemp)"; trap 'rm -f -- "$dropvia_tmp"' EXIT; curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/VanyaKrotov/dropvia/main/scripts/install-cli.sh -o "$dropvia_tmp"; bash -n "$dropvia_tmp"; if [ "$(id -u)" = 0 ]; then bash "$dropvia_tmp" --install; else sudo bash "$dropvia_tmp" --install; fi )
+```
+
+Далее: `sudo dropvia install`, `uninstall`, `update`, `update-cli`, `up`, `down`. При установке запрашиваются bind IP/port; переустановка и удаление требуют подтверждения. Образы проверяются по SHA-256, обновление сохраняет bind и имеет rollback. Полная инструкция, команда установки только CLI и ограничения: [docs/UBUNTU_CLI.md](docs/UBUNTU_CLI.md).
+
 ## Импорты
 
 Для src/ настроены aliases в tsconfig.json: `@app/`, `@pages/`, `@widgets/`, `@features/`, `@entities/`, `@shared/`. Vite и Vitest используют эту же карту без дополнительных зависимостей.
@@ -103,6 +123,7 @@ npm run typecheck
 npm run format:check
 npm run test
 npm run test:release
+npm run test:cli
 npm run build
 npx playwright install chromium
 npm run test:ssr
