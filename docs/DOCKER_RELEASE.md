@@ -1,5 +1,15 @@
 # Docker release
 
+## Исправление ожидания runtime: релиз v0.0.1
+
+В [run40903911231](https://github.com/VanyaKrotov/dropvia/actions/runs/40903911231/job/123558761619) image build, archive save/load и Quality на Linux/Windows прошли. Падение произошло на первом GET к только что запущенному контейнеру: curl56, connection reset, примерно через180ms после docker run. Логи ещё не содержали сообщения Node о запуске. Это соответствует запросу до готовности сервера; сам факт последующей успешной готовности тем запуском не подтверждён.
+
+Прежний `--retry-connrefused` не повторял receive/reset failures. Теперь readiness GET использует `--retry-all-errors` с20 повторами, retry budget60s, connect timeout2s и request timeout5s. Ответ пишется через `--output`, чтобы curl сбрасывал частичное тело между попытками: stdout redirection при retry могла склеить неудачный и успешный ответы. Проверки title, RU HTML, static image и non-root остаются обязательными. При ошибке перед удалением контейнера выводятся его State и logs; исходный код ошибки сохраняется.
+
+Регрессия в scripts/release/runtime-readiness.test.mjs запускает фактическую команду curl из workflow против локального TCP-сервера: первый ответ обрывается reset после частичного тела, второй корректен. Проверяются повторный запрос и точный итоговый HTML. Это настоящий транспорт/curl, но не настоящий Docker Engine.
+
+После коммита исправления в main нужен новый релизный тег, например v0.0.2. Re-run старого v0.0.1 использует workflow старого коммита и не подхватит исправление из main. Теги/релизы автоматически ради проверки не создаются.
+
 Для подготовки сервера и установки готового релиза предусмотрен отдельный [deploy.sh](DEPLOY.md). Он не меняет условия сборки или публикации образов.
 
 Цель владельца: образ для main и релизных тегов vX.X.X, архив в GitHub Release. Реализация — `.github/workflows/docker-release.yml`, `Dockerfile`, `.dockerignore`, `scripts/release/validate-tag.mjs`. Baseline до задачи: cb91cad. Настройка не создаёт удалённый тег/релиз и не выполняет deployment сама по себе; публикация выполняется будущим tag push.

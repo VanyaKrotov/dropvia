@@ -1,5 +1,11 @@
 # Архитектура Dropvia
 
+## Cookie notice
+
+`features/cookie-notice` owns the first-party dismissal cookie and the one-button notice. Root loader parses the cookie before SSR; common Providers render the translated notice on all existing public screens, including sign-in and file nodes. Simplified root error pages remain outside Providers. Cookie-dependent HTML is no-store; the homepage merges parent cache headers with action headers instead of dropping them.
+
+POST `/cookie-notice` accepts an explicit acknowledgement and a safe internal return path. It validates origin, media type and a bounded body, then stores a fixed versioned value for one year with Path=/, HttpOnly, SameSite=Lax and Secure on HTTPS. Native document submissions redirect back with303. Enhanced submissions use the existing TanStack mutation to keep network/proxy errors local and retry explicit; success revalidates the root, including completion after navigating away from the submitting instance. The endpoint is not part of public file API docs or sitemap. No tracking or advertising consent is introduced.
+
 Обновлено 28 октября 2026. Решение владельца: Feature-Sliced Design в `src/`, React Router 8.5.1 Framework Mode, SSR, Node runtime, React19.3.1, TypeScript6 strict, Tailwind4.3.3. Исходный подготовительный экран заменён; `DESIGN.md` сохранён.
 
 ## Слои и ответственность

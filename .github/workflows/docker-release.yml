@@ -87,14 +87,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          trap 'docker logs dropvia-release; docker rm -f dropvia-release' EXIT
+          cleanup() {
+            result=$?
+            trap - EXIT
+            if [[ "$result" -ne 0 ]]; then
+              docker inspect --format '{{json .State}}' dropvia-release || true
+            fi
+            docker logs dropvia-release || true
+            docker rm -f dropvia-release || true
+            exit "$result"
+          }
+          trap cleanup EXIT
           docker run --detach --name dropvia-release \
             --publish 127.0.0.1:3000:3000 --read-only \
             --cap-drop ALL --security-opt no-new-privileges \
             "dropvia:${RELEASE_TAG}"
           docker exec dropvia-release node -e 'if (process.getuid() === 0) process.exit(1)'
-          curl --fail --silent --show-error --retry 20 --retry-connrefused \
-            --retry-delay 1 --max-time 5 http://127.0.0.1:3000/ > "$RUNNER_TEMP/home.html"
+          curl --fail --silent --show-error --retry 20 --retry-all-errors \
+            --retry-delay 1 --retry-max-time 60 --connect-timeout 2 --max-time 5 \
+            --output "$RUNNER_TEMP/home.html" http://127.0.0.1:3000/
           grep -Fq '<title>File storage and sharing | Dropvia</title>' "$RUNNER_TEMP/home.html"
           curl --fail --silent --show-error http://127.0.0.1:3000/ru > "$RUNNER_TEMP/ru.html"
           grep -Fq 'lang="ru"' "$RUNNER_TEMP/ru.html"

@@ -1,4 +1,11 @@
 export const en = {
+  cookieNotice: {
+    label: 'Cookies',
+    message: 'We use a cookie to remember your choice.',
+    details: 'Learn more',
+    accept: 'OK',
+    error: 'Could not save your choice. Please try again.',
+  },
   common: {
     signIn: 'Sign in',
     skip: 'Skip to content',
@@ -493,7 +500,7 @@ export const en = {
         },
         {
           title: 'Cookies and local preferences',
-          body: 'The public website does not set advertising or analytics cookies. Your language follows the page address: English at the main URLs and Russian under /ru. The interface follows your device’s light or dark appearance setting. These preferences do not require a tracking cookie or a local storage identifier.',
+          body: 'After you select OK in the cookie notice, we store the first-party dropvia_cookie_notice cookie for one year so the notice stays closed. It contains the same acknowledgement value for all visitors, not a personal identifier. You can delete it in your browser settings to show the notice again. We do not set advertising or analytics cookies. Your language follows the page address and the interface follows your device’s light or dark appearance setting.',
         },
         {
           title: 'Your choices',

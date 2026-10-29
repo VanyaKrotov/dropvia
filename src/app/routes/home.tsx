@@ -28,8 +28,10 @@ export async function action({ request }: Route.ActionArgs) {
   );
 }
 
-export function headers({ actionHeaders }: Route.HeadersArgs) {
-  return actionHeaders;
+export function headers({ parentHeaders, actionHeaders }: Route.HeadersArgs) {
+  const headers = new Headers(parentHeaders);
+  actionHeaders.forEach((value, key) => headers.set(key, value));
+  return headers;
 }
 
 export default function Home() {
